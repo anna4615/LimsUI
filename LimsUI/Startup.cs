@@ -1,4 +1,9 @@
+using GraphQL.Client.Abstractions;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 using LimsUI.Data;
+using LimsUI.GraphQL.Interfaces;
+using LimsUI.GraphQL.SampleClasses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,6 +39,11 @@ namespace LimsUI
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
+
+            services.AddScoped<IGraphQLClient>(s => new GraphQLHttpClient(Configuration["GraphQLURI"], new NewtonsoftJsonSerializer()));
+            services.AddScoped<ISampleConsumer, SampleConsumer>();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +61,8 @@ namespace LimsUI
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //Tar bort redirection för att kunna anropa localhost från Java-projekt, Certifikat-problem annars
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
