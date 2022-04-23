@@ -1,4 +1,5 @@
 ﻿using LimsUI.GraphQL.SampleClasses;
+using LimsUI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

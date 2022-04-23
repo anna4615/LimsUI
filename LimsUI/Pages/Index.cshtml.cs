@@ -12,23 +12,12 @@ namespace LimsUI.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-        private readonly ISampleConsumer _sampleConsumer;
+        
 
-        public IndexModel(ILogger<IndexModel> logger, ISampleConsumer sampleConsumer)
-        {
-            _logger = logger;
-            _sampleConsumer = sampleConsumer;
-        }
-
-        public List<Sample> Samples { get; set; }
-
-        public async Task<IActionResult> OnGet()
+        public void OnGet()
         {
 
-            Samples = await _sampleConsumer.GetSamples();
-
-            return Page();
+            
            
         }
     }

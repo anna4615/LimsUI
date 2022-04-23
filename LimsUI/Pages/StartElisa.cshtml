@@ -2,3 +2,44 @@
 @model LimsUI.Pages.StartElisaModel
 @{
 }
+
+
+
+
+<table class="table table-sm border-bottom">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Samples[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Samples[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Samples[0].DateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Samples[0].Concentration)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sample in Model.Samples)
+        {
+            <tr class="border-bottom">
+                <td>@sample.Id</td>
+                <td>@sample.Name</td>                
+                <td>@sample.DateAdded.ToShortDateString()</td>                
+                @if (sample.Concentration != null)
+                {
+                    <td>@sample.Concentration</td>
+                }
+                else
+                {
+                    <td>nd</td>
+                }            
+                
+            </tr>
+        }
+    </tbody>
+</table>
