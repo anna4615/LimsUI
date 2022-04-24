@@ -4,6 +4,7 @@ using GraphQL.Client.Serializer.Newtonsoft;
 using LimsUI.Data;
 using LimsUI.GraphQL.Interfaces;
 using LimsUI.GraphQL.SampleClasses;
+using LimsUI.REST;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,10 +44,13 @@ namespace LimsUI
 
             services.AddRazorPages();
 
+            services.AddHttpClient();
+
             services.AddScoped<IGraphQLClient>(s => new GraphQLHttpClient(Configuration["GraphQLURI"],
                 new NewtonsoftJsonSerializer()));
 
             services.AddScoped<ISampleConsumer, SampleConsumer>();
+            services.AddScoped<IRequest, Request>();
 
             services.AddControllers();
         }

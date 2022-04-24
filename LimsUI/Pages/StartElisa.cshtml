@@ -1,9 +1,8 @@
 ﻿@page
 @model LimsUI.Pages.StartElisaModel
+
 @{
 }
-
-
 
 
 <table class="table table-sm border-bottom">
@@ -23,23 +22,36 @@
             </th>
         </tr>
     </thead>
+    <form class="form-group" method="post">
+        <div class="d-flex justify-content-center pb-3">
+            <input type="submit" value="Starta ELISA" class="btn btn-primary" />
+        </div>
     <tbody>
-        @foreach (var sample in Model.Samples)
-        {
+            @foreach (var sample in Model.Samples)
+            {
             <tr class="border-bottom">
                 <td>@sample.Id</td>
-                <td>@sample.Name</td>                
-                <td>@sample.DateAdded.ToShortDateString()</td>                
-                @if (sample.Concentration != null)
-                {
+                <td>@sample.Name</td>
+                <td>@sample.DateAdded.ToShortDateString()</td>
+
+                    @if (sample.Concentration != null)
+                    {
                     <td>@sample.Concentration</td>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     <td>nd</td>
-                }            
-                
+                    <td class="form-group form-check">
+                        <input type="checkbox" name="SelectedIds" value="@sample.Id">
+                    </td>
+                    }
+
+                    @if (sample.Concentration == null)
+                    {
+                    }
+
             </tr>
-        }
+            }
     </tbody>
+    </form>
 </table>
