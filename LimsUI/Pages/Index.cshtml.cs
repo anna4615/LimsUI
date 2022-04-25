@@ -1,7 +1,4 @@
-﻿using LimsUI.GraphQL.Interfaces;
-using LimsUI.GraphQL.SampleClasses;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,9 @@
 ﻿using LimsUI.Models;
 using System.Collections.Generic;
 
-namespace LimsUI.GraphQL.SampleClasses
+namespace LimsUI.Models
 {
-    public class ResponseSampleList
+    public class SampleList
     {
         public List<Sample> Samples { get; set; }
     }

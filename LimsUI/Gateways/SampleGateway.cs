@@ -1,17 +1,17 @@
 ﻿using GraphQL;
 using GraphQL.Client.Abstractions;
-using LimsUI.GraphQL.Interfaces;
+using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LimsUI.GraphQL.SampleClasses
+namespace LimsUI.Gateways
 {
-    public class SampleConsumer : ISampleConsumer
+    public class SampleGateway : ISampleGateway
     {
         private readonly IGraphQLClient _client;
 
-        public SampleConsumer(IGraphQLClient client)
+        public SampleGateway(IGraphQLClient client)
         {
             _client = client;
         }
@@ -34,7 +34,7 @@ namespace LimsUI.GraphQL.SampleClasses
             //ResponseSampleList är en klass som bara har en property: List<Sample> Samples,
             //den behövs för att deserialiseringen skall funka (prog kraschar om man sätter listan
             //istället för ResponseSampleList
-            GraphQLResponse<ResponseSampleList> response = await _client.SendQueryAsync<ResponseSampleList>(query);
+            GraphQLResponse<SampleList> response = await _client.SendQueryAsync<SampleList>(query);
 
             List<Sample> samples = response.Data.Samples;
 

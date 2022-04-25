@@ -1,6 +1,5 @@
-using LimsUI.GraphQL.Interfaces;
+using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models;
-using LimsUI.REST;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -13,14 +12,14 @@ namespace LimsUI.Pages
     public class StartElisaModel : PageModel
     {
         private readonly ILogger<StartElisaModel> _logger;
-        private readonly ISampleConsumer _sampleConsumer;
-        private readonly IRequest _request;
+        private readonly ISampleGateway _sampleGateway;
+        private readonly IProcessGateway _request;
 
-        public StartElisaModel(ILogger<StartElisaModel> logger, ISampleConsumer sampleConsumer,
-            IRequest request)
+        public StartElisaModel(ILogger<StartElisaModel> logger, ISampleGateway sampleGateway,
+            IProcessGateway request)
         {
             _logger = logger;
-            _sampleConsumer = sampleConsumer;
+            _sampleGateway = sampleGateway;
             _request = request;
         }
 
@@ -35,7 +34,7 @@ namespace LimsUI.Pages
 
         public async Task<IActionResult> OnGet()
         {
-            Samples = await _sampleConsumer.GetSamples();
+            Samples = await _sampleGateway.GetSamples();
 
             return Page();
         }
@@ -44,7 +43,7 @@ namespace LimsUI.Pages
         {
             if (SelectedIds.Any())
             {
-                Samples = await _sampleConsumer.GetSamples();
+                Samples = await _sampleGateway.GetSamples();
 
                 SelectedSamples = new List<Sample>();
 

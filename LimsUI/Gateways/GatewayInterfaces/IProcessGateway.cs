@@ -1,9 +1,9 @@
 ﻿using LimsUI.Models;
 using System.Threading.Tasks;
 
-namespace LimsUI.REST
+namespace LimsUI.Gateways.GatewayInterfaces
 {
-    public interface IRequest
+    public interface IProcessGateway
     {
         Task<ProcessVariables> StartElisa(StartElisaBody body);
     }

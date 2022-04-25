@@ -1,17 +1,18 @@
-﻿using LimsUI.Models;
+﻿using LimsUI.Gateways.GatewayInterfaces;
+using LimsUI.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace LimsUI.REST
+namespace LimsUI.Gateways
 {
-    public class Request : IRequest
+    public class ProcessGateway : IProcessGateway
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _client;
 
-        public Request(IConfiguration configuration, HttpClient client)
+        public ProcessGateway(IConfiguration configuration, HttpClient client)
         {
             _configuration = configuration;
             _client = client;
