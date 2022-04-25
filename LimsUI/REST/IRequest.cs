@@ -5,6 +5,6 @@ namespace LimsUI.REST
 {
     public interface IRequest
     {
-        Task<ProcessElisa> StartElisa(StartElisaBody body);
+        Task<ProcessVariables> StartElisa(StartElisaBody body);
     }
 }

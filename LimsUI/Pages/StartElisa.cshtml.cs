@@ -1,11 +1,11 @@
 using LimsUI.GraphQL.Interfaces;
-using LimsUI.GraphQL.SampleClasses;
 using LimsUI.Models;
 using LimsUI.REST;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LimsUI.Pages
@@ -24,7 +24,7 @@ namespace LimsUI.Pages
             _request = request;
         }
 
-        
+
         public List<Sample> Samples { get; set; }
 
         [BindProperty]
@@ -42,32 +42,36 @@ namespace LimsUI.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            Samples = await _sampleConsumer.GetSamples();
-
-            SelectedSamples = new List<Sample>();
-
-            foreach (var sample in Samples)
+            if (SelectedIds.Any())
             {
-                if (SelectedIds.Contains(sample.Id))
-                {
-                    SelectedSamples.Add(sample);
-                }
-            }
+                Samples = await _sampleConsumer.GetSamples();
 
-            StartElisaBody body = new StartElisaBody
-            {
-                variables = new Variables
+                SelectedSamples = new List<Sample>();
+
+                foreach (var sample in Samples)
                 {
-                    samples = new Samples
+                    if (SelectedIds.Contains(sample.Id))
                     {
-                        type = "String",
-                        value = "{\"id\":3,\"name\":\"Prov3\"};{\"id\":4,\"name\":\"Prov4\"}"
+                        SelectedSamples.Add(sample);
                     }
-                },
-                withVariablesInReturn = true
-            };
+                }
 
-            await _request.StartElisa(body);
+                StartElisaBody body = new StartElisaBody
+                {
+                    variables = new Variables
+                    {
+                        samples = new Samples
+                        {
+                            type = "String",
+                            value = "{\"id\":3,\"name\":\"Prov3\"};{\"id\":4,\"name\":\"Prov4\"}"
+                        }
+                    },
+                    withVariablesInReturn = true
+                };
+
+                await _request.StartElisa(body);
+
+            }
 
             return Page();
         }

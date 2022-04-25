@@ -17,10 +17,10 @@ namespace LimsUI.REST
             _client = client;
         }
 
-        public async Task<ProcessElisa> StartElisa(StartElisaBody body)
+        public async Task<ProcessVariables> StartElisa(StartElisaBody body)
         {
             HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["StartElisa"], body);
-            var returnValue = await respons.Content.ReadFromJsonAsync<ProcessElisa>();
+            ProcessVariables returnValue = await respons.Content.ReadFromJsonAsync<ProcessVariables>();
 
             return returnValue;
         }

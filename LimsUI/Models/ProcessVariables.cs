@@ -1,6 +1,6 @@
 ﻿namespace LimsUI.Models
 {
-    public class ProcessElisa
+    public class ProcessVariables
     {
 
         public class Rootobject

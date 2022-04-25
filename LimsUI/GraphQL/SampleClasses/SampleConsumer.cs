@@ -31,7 +31,7 @@ namespace LimsUI.GraphQL.SampleClasses
                         }"
             };
 
-            //ResponseSampleList är eän klass som bara har en property: List<Sample> Samples,
+            //ResponseSampleList är en klass som bara har en property: List<Sample> Samples,
             //den behövs för att deserialiseringen skall funka (prog kraschar om man sätter listan
             //istället för ResponseSampleList
             GraphQLResponse<ResponseSampleList> response = await _client.SendQueryAsync<ResponseSampleList>(query);
