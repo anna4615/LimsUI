@@ -13,14 +13,14 @@ namespace LimsUI.Pages
     {
         private readonly ILogger<StartElisaModel> _logger;
         private readonly ISampleGateway _sampleGateway;
-        private readonly IProcessGateway _request;
+        private readonly IProcessGateway _processGateway;
 
         public StartElisaModel(ILogger<StartElisaModel> logger, ISampleGateway sampleGateway,
-            IProcessGateway request)
+            IProcessGateway processGateway)
         {
             _logger = logger;
             _sampleGateway = sampleGateway;
-            _request = request;
+            _processGateway = processGateway;
         }
 
 
@@ -35,6 +35,7 @@ namespace LimsUI.Pages
         public async Task<IActionResult> OnGet()
         {
             Samples = await _sampleGateway.GetSamples();
+            //TODO: Spara Samples i cookie
 
             return Page();
         }
@@ -43,36 +44,63 @@ namespace LimsUI.Pages
         {
             if (SelectedIds.Any())
             {
+                //TODO: Hämta Samples från cookie
                 Samples = await _sampleGateway.GetSamples();
 
-                SelectedSamples = new List<Sample>();
+                MakeSelectedSamplesList();
+                StartElisaBody body = MakeStartElisaBody();                
 
-                foreach (var sample in Samples)
-                {
-                    if (SelectedIds.Contains(sample.Id))
-                    {
-                        SelectedSamples.Add(sample);
-                    }
-                }
-
-                StartElisaBody body = new StartElisaBody
-                {
-                    variables = new Variables
-                    {
-                        samples = new Samples
-                        {
-                            type = "String",
-                            value = "{\"id\":3,\"name\":\"Prov3\"};{\"id\":4,\"name\":\"Prov4\"}"
-                        }
-                    },
-                    withVariablesInReturn = true
-                };
-
-                await _request.StartElisa(body);
-
+                await _processGateway.StartElisa(body);
             }
 
             return Page();
+        }
+
+
+        private void MakeSelectedSamplesList()
+        {
+            SelectedSamples = new List<Sample>();
+
+            foreach (var sample in Samples)
+            {
+                if (SelectedIds.Contains(sample.Id))
+                {
+                    SelectedSamples.Add(sample);
+                }
+            }
+        }
+
+        private StartElisaBody MakeStartElisaBody()
+        {
+            StartElisaBody body = new StartElisaBody
+            {
+                variables = new Variables
+                {
+                    samples = new Samples
+                    {
+                        type = "String",
+                        value = MakeSamplesValue()
+                    }
+                },
+                withVariablesInReturn = true
+            };
+
+            return body;
+        }
+
+
+        private string MakeSamplesValue()
+        {
+            string sampleValue = "";
+
+            foreach (var sample in SelectedSamples)
+            {
+                sampleValue += $"{{\"id\":{sample.Id},\"name\":\"{sample.Name}\"}};";
+            }
+
+            string trimedSampleValue = sampleValue.Trim(';');
+
+            return trimedSampleValue;
         }
     }
 }
