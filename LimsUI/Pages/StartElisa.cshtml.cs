@@ -42,9 +42,12 @@ namespace LimsUI.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            //TODO: Felhantering om inga prover är valda
+            //TODO: Hämta Samples från cookie
+            Samples = await _sampleGateway.GetSamples();
+
             if (SelectedIds.Any())
             {
-                //TODO: Hämta Samples från cookie
                 Samples = await _sampleGateway.GetSamples();
 
                 MakeSelectedSamplesList();
