@@ -1,4 +1,4 @@
-﻿namespace LimsUI.Models
+﻿namespace LimsUI.Models.StartElisaMutation
 {
     public class StartElisaBody
     {

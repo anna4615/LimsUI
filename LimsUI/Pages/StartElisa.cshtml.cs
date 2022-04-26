@@ -1,11 +1,15 @@
 using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models;
+using LimsUI.Models.StartElisaMutation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Samples = LimsUI.Models.StartElisaMutation.Samples;
+using Variables = LimsUI.Models.StartElisaMutation.Variables;
 
 namespace LimsUI.Pages
 {
@@ -31,6 +35,8 @@ namespace LimsUI.Pages
 
         public List<Sample> SelectedSamples { get; set; }
 
+        public Layout Layout { get; set; }
+
 
         public async Task<IActionResult> OnGet()
         {
@@ -51,13 +57,18 @@ namespace LimsUI.Pages
                 Samples = await _sampleGateway.GetSamples();
 
                 MakeSelectedSamplesList();
-                StartElisaBody body = MakeStartElisaBody();                
+                StartElisaBody body = MakeStartElisaBody();
 
-                await _processGateway.StartElisa(body);
+                ProcessVariables response = await _processGateway.StartElisa(body);
+
+                Layout = JsonSerializer.Deserialize<Layout>(response.variables.plate.value.ToString());
+
             }
+
 
             return Page();
         }
+
 
 
         private void MakeSelectedSamplesList()
@@ -98,12 +109,11 @@ namespace LimsUI.Pages
 
             foreach (var sample in SelectedSamples)
             {
+                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting#escaping-braces
                 sampleValue += $"{{\"id\":{sample.Id},\"name\":\"{sample.Name}\"}};";
             }
 
-            string trimedSampleValue = sampleValue.Trim(';');
-
-            return trimedSampleValue;
+            return sampleValue.Trim(';');
         }
     }
 }
