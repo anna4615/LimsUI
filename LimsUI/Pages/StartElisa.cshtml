@@ -76,6 +76,7 @@
             @for (int i = 0; i < 8; i++)
             {
                 <tr class="border-bottom">
+
                     <th>@Convert.ToChar(i + 65)</th>
 
                     @for (int j = 0; j < 12; j++)
@@ -86,7 +87,7 @@
                         }
                         else
                         {
-                            <td>@Model.Layout.Wells[i + (j*8)].Reagent.Replace(" ug/ml", null)</td>
+                            <td>@Model.Layout.Wells[i + (j*8)].Reagent</td>
                         }
                     }
 

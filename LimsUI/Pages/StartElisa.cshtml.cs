@@ -40,6 +40,8 @@ namespace LimsUI.Pages
 
         public async Task<IActionResult> OnGet()
         {
+            await _processGateway.GetPlateVariableForElisaId(1224);
+
             Samples = await _sampleGateway.GetSamples();
             //TODO: Spara Samples i cookie
 
