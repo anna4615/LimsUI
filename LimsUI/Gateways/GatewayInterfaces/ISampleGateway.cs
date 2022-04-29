@@ -1,4 +1,4 @@
-﻿using LimsUI.Models;
+﻿using LimsUI.Models.UIModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

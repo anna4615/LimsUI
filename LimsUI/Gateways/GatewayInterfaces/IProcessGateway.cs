@@ -1,6 +1,8 @@
-﻿using LimsUI.Models;
-using LimsUI.Models.StartElisaMutation;
+﻿using LimsUI.Models.UIModels;
+using LimsUI.Models.ProcessModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using LimsUI.Models.ProcessModels.StartElisa;
 
 namespace LimsUI.Gateways.GatewayInterfaces
 {
@@ -8,7 +10,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
     {
         Task<ProcessVariables> StartElisa(StartElisaBody body);
 
-        Task<Plate> GetPlateVariableForElisaId(int elisaId);
+        Task<Layout> GetLayoutForElisaId(int elisaId);
 
     }
 }

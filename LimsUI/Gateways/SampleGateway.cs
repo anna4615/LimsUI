@@ -1,7 +1,7 @@
 ﻿using GraphQL;
 using GraphQL.Client.Abstractions;
 using LimsUI.Gateways.GatewayInterfaces;
-using LimsUI.Models;
+using LimsUI.Models.UIModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

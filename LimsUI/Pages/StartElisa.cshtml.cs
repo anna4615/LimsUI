@@ -1,6 +1,7 @@
 using LimsUI.Gateways.GatewayInterfaces;
-using LimsUI.Models;
-using LimsUI.Models.StartElisaMutation;
+using LimsUI.Models.ProcessModels;
+using LimsUI.Models.ProcessModels.StartElisa;
+using LimsUI.Models.UIModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -8,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Samples = LimsUI.Models.StartElisaMutation.Samples;
-using Variables = LimsUI.Models.StartElisaMutation.Variables;
 
 namespace LimsUI.Pages
 {
@@ -40,7 +39,9 @@ namespace LimsUI.Pages
 
         public async Task<IActionResult> OnGet()
         {
-            await _processGateway.GetPlateVariableForElisaId(1224);
+            //TODO: Flytta till Layout Page
+            Layout layout = await _processGateway.GetLayoutForElisaId(35);
+
 
             Samples = await _sampleGateway.GetSamples();
             //TODO: Spara Samples i cookie
@@ -90,9 +91,9 @@ namespace LimsUI.Pages
         {
             StartElisaBody body = new StartElisaBody
             {
-                variables = new Variables
+                variables = new Models.ProcessModels.StartElisa.Variables
                 {
-                    samples = new Samples
+                    samples = new Models.ProcessModels.StartElisa.Samples
                     {
                         type = "String",
                         value = MakeSamplesValue()

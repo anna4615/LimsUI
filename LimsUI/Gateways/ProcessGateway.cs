@@ -1,12 +1,14 @@
 ﻿using LimsUI.Gateways.GatewayInterfaces;
-using LimsUI.Models;
-using LimsUI.Models.StartElisaMutation;
+using LimsUI.Models.UIModels;
+using LimsUI.Models.ProcessModels;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
+using LimsUI.Models.ProcessModels.StartElisa;
 
 namespace LimsUI.Gateways
 {
@@ -30,20 +32,66 @@ namespace LimsUI.Gateways
             return returnValue;
         }
 
-        public async Task<Plate> GetPlateVariableForElisaId(int elisaId)
+        //Tar fram processens id för att använda i anrop där processvariabeln "plate" hämtas,
+        //plate innehåller en lista av Well som används för att skapa lista av Well i Layout 
+        public async Task<Layout> GetLayoutForElisaId(int elisaId)
         {
             
-            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstance"] + elisaId);
-            var v = await respons.Content.ReadAsStringAsync();
-            List<ProcessInstance> processInstanceList = await respons.Content.ReadFromJsonAsync<List<ProcessInstance>>();
-            string businessKey = processInstanceList.First().Instances.First().businessKey;
+            string instanceId = await GetProcessInstanceId(elisaId);
 
+            PlateVariable plateVariable = await GetPlateVariable(instanceId);
 
-            //använd businessKey i svaret för att hämta variabel "plate"
+            //Skapar layout från properties i plateVariable
+            //Well i plateVariable konverteras till Well som anvämds i klassen Layout
+            Layout layout = new Layout
+            {
+                ElisaId = plateVariable.value.elisaId,
+                Wells = ConvertVariableWellsToLayoutWells(plateVariable.value.wells)
+            };
 
-            Plate returnValue = await respons.Content.ReadFromJsonAsync<Plate>();
-
-            return returnValue;
+            return layout;
         }
+
+        private async Task<string> GetProcessInstanceId(int elisaId)
+        {
+            //Hämta rätt process mhja BusinessKey, BusinessKey = ElisaId
+            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstanceFromBusinessKey"] + elisaId);
+            string responseString = await respons.Content.ReadAsStringAsync();
+            string trimmedResponse = responseString.Trim('[').Trim(']');
+
+            ProcessInstance processInstance = JsonSerializer.Deserialize<ProcessInstance>(trimmedResponse);
+            return processInstance.id;
+        }
+
+        private async Task<PlateVariable> GetPlateVariable(string instanceId)
+        {
+            HttpResponseMessage response = await _client.GetAsync(
+                _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/plate");
+
+            string responseString = await response.Content.ReadAsStringAsync();
+            PlateVariable plateVariable = JsonSerializer.Deserialize<PlateVariable>(responseString);
+
+            return plateVariable;
+        }
+
+
+        private static List<Models.UIModels.Well> ConvertVariableWellsToLayoutWells(Models.ProcessModels.Well[] wells)
+        {
+            List<Models.UIModels.Well> wellsList = new List<Models.UIModels.Well>();
+
+            for (int i = 0; i < wells.Length; i++)
+            {
+                wellsList.Add(new Models.UIModels.Well
+                {
+                    Position = wells[i].pos,
+                    WellName = wells[i].wellName,
+                    Reagent = wells[i].reagent,
+                });
+            }
+
+            return wellsList.OrderBy(w => w.Position).ToList();
+        }
+
+
     }
 }
