@@ -3,12 +3,11 @@
 @{
 }
 
-<div class="container" >
+
+
+<div id="layout" class="container px-5">
     <h4>Layout för ELISA</h4>
     <p>ELISA id: @Model.Layout.ElisaId</p>
-</div>
-
-<div class="container px-5">
     <table style="table-layout: fixed ; width: 75%; text-align: center" class="table table-sm border-bottom">
         <thead>
             <tr>
@@ -43,4 +42,6 @@
         </tbody>
     </table>
 </div>
+
+<input type="button" onclick="printDiv('layout')" value="Skriv ut" />
 
