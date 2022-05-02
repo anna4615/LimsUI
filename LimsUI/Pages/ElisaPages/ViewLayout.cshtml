@@ -1,0 +1,46 @@
+﻿@page
+@model LimsUI.Pages.ElisaPages.ViewLayoutModel
+@{
+}
+
+<div class="container" >
+    <h4>Layout för ELISA</h4>
+    <p>ELISA id: @Model.Layout.ElisaId</p>
+</div>
+
+<div class="container px-5">
+    <table style="table-layout: fixed ; width: 75%; text-align: center" class="table table-sm border-bottom">
+        <thead>
+            <tr>
+                <th></th>
+                @for (int i = 1; i < 13; i++)
+                {
+                    <th>@i</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 8; i++)
+            {
+                <tr class="border-bottom">
+
+                    <th>@Convert.ToChar(i + 65)</th>
+
+                    @for (int j = 0; j < 12; j++)
+                    {
+                        @if (Model.Layout.Wells[i + (j * 8)].Reagent == null)
+                        {
+                            <td>-</td>
+                        }
+                        else
+                        {
+                            <td>@Model.Layout.Wells[i + (j*8)].Reagent</td>
+                        }
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

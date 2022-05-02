@@ -1,0 +1,76 @@
+﻿@page
+@model StartElisaModel
+
+@{
+
+}
+
+
+@if (Model.ElisaId == null)
+{
+    <table class="table table-sm border-bottom">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Samples[0].Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Samples[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Samples[0].DateAdded)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Samples[0].Concentration)
+                </th>
+                <th>
+                    Välj prover
+                </th>
+            </tr>
+        </thead>
+        <form class="form-group" method="post">
+            <div class="d-flex justify-content-center pb-3">
+                <input type="submit" value="Starta ELISA" class="btn btn-primary" />
+            </div>
+        <tbody>
+                @foreach (var sample in Model.Samples)
+                {
+                <tr class="border-bottom">
+                    <td>@sample.Id</td>
+                    <td>@sample.Name</td>
+                    <td>@sample.DateAdded.ToShortDateString()</td>
+
+                        @if (sample.Concentration != null)
+                        {
+                        <td>@sample.Concentration</td>
+                        }
+                        else
+                        {
+                        <td>nd</td>
+                        <td class="form-group form-check">
+                            <input type="checkbox" name="SelectedIds" value="@sample.Id">
+                        </td>
+                        }
+
+                        @if (sample.Concentration == null)
+                        {
+                        }
+
+                </tr>
+                }
+        </tbody>
+        </form>
+    </table>
+}
+
+else
+{
+    <div>
+        <h5>Elisa @Model.ElisaId startad</h5>
+        <a href="./ViewLayout/?ElisaId=@Model.ElisaId">Visa platt-layout</a>
+    </div>
+}
+
+
+
+

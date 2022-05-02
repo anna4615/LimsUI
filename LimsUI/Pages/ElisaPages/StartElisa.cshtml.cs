@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace LimsUI.Pages
+namespace LimsUI.Pages.ElisaPages
 {
     public class StartElisaModel : PageModel
     {
@@ -34,15 +34,13 @@ namespace LimsUI.Pages
 
         public List<Sample> SelectedSamples { get; set; }
 
+        public int? ElisaId { get; set; }
+
         public Layout Layout { get; set; }
 
 
         public async Task<IActionResult> OnGet()
         {
-            //TODO: Flytta till Layout Page
-            Layout layout = await _processGateway.GetLayoutForElisaId(35);
-
-
             Samples = await _sampleGateway.GetSamples();
             //TODO: Spara Samples i cookie
 
@@ -63,6 +61,8 @@ namespace LimsUI.Pages
                 StartElisaBody body = MakeStartElisaBody();
 
                 ProcessVariables response = await _processGateway.StartElisa(body);
+
+                ElisaId = response.variables.elisaId.value;
 
                 Layout = JsonSerializer.Deserialize<Layout>(response.variables.plate.value.ToString());
 
