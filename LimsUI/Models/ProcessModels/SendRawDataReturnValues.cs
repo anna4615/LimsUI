@@ -29,68 +29,6 @@ namespace LimsUI.Models.ProcessModels
         public Samples samples { get; set; }
         public Standardsdata standardsData { get; set; }
     }
-
-    //public class Elisa
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-    //public class Valueinfo
-    //{
-    //    public string objectTypeName { get; set; }
-    //    public string serializationDataFormat { get; set; }
-    //}
-
-    //public class Tests
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-
-    //public class Elisaid
-    //{
-    //    public string type { get; set; }
-    //    public int value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-
-
-    //public class Samplesdata
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-
-
-    //public class Plate
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-    //public class Samples
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
-
-    //public class Standardsdata
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //    public Valueinfo valueInfo { get; set; }
-    //}
-
 }
 
 

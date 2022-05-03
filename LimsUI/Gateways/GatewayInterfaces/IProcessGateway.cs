@@ -9,7 +9,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
     {
         Task<StartElisaReturnValues> StartElisa(StartElisaBody body);
         Task<Layout> GetLayoutForElisaId(int elisaId);
-        //Task SendRawData(SendRawDataBody body);
+        Task<SendRawDataReturnValues> SendRawData(SendRawDataBody body);
 
     }
 }

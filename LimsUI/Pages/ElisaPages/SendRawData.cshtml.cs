@@ -7,11 +7,20 @@ using System.Globalization;
 using System.Linq;
 using LimsUI.Models.ProcessModels;
 using LimsUI.Models.ProcessModels.Variables;
+using LimsUI.Gateways.GatewayInterfaces;
+using System.Threading.Tasks;
 
 namespace LimsUI.Pages.ElisaPages
 {
     public class SendRawDataModel : PageModel
     {
+        private readonly IProcessGateway _processGateway;
+
+        public SendRawDataModel(IProcessGateway processGateway)
+        {            
+            _processGateway = processGateway;
+        }
+
 
         [BindProperty]
         public IFormFile SelectedFile { get; set; }
@@ -23,12 +32,15 @@ namespace LimsUI.Pages.ElisaPages
 
         }
 
-        public void OnPost()
+        public async Task<IActionResult> OnPost()
         {
             ReadSelectedFileToResults();
 
             SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
 
+            SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
+
+            return Page();
         }
 
 
@@ -107,7 +119,7 @@ namespace LimsUI.Pages.ElisaPages
                 {
                     float conc = float.Parse(splitString[1]);
                     float measValue = float.Parse(splitString[2]);
-                    standardsDataValue += $"{{\\\"pos\\\":{pos},\\\"concentration\\\":{SetPointSeparator(conc)},\\\"measValue\\\":{SetPointSeparator(measValue)}}},";
+                    standardsDataValue += $"{{\"pos\":{pos},\"concentration\":{SetPointSeparator(conc)},\"measValue\":{SetPointSeparator(measValue)}}},";
                 }
             }
 
@@ -140,7 +152,7 @@ namespace LimsUI.Pages.ElisaPages
                     int sampleId = int.Parse(splitString[1]);
                     string name = splitString[2];
                     float measValue = float.Parse(splitString[3]);
-                    samplesDataValue += $"{{\\\"pos\\\":{pos},\\\"sampleId\\\":{sampleId},\\\"name\\\":\\\"{name}\\\",\\\"measValue\\\":{SetPointSeparator(measValue)}}},";
+                    samplesDataValue += $"{{\"pos\":{pos},\"sampleId\":{sampleId},\"name\":\"{name}\",\"measValue\":{SetPointSeparator(measValue)}}},";
                     
                 }
             }

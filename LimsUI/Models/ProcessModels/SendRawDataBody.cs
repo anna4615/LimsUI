@@ -16,28 +16,10 @@ namespace LimsUI.Models.ProcessModels
         public Elisaid elisaId { get; set; }
     }
 
-    //public class Elisaid
-    //{
-    //    public int value { get; set; }
-    //    public string type { get; set; }
-    //}
-
     public class Processvariables
     {
         public Standardsdata standardsData { get; set; }
         public Samplesdata samplesData { get; set; }
     }
-
-    //public class Standardsdata
-    //{
-    //    public string value { get; set; }
-    //    public string type { get; set; }
-    //}
-
-    //public class Samplesdata
-    //{
-    //    public string value { get; set; }
-    //    public string type { get; set; }
-    //}
 }
 

@@ -26,11 +26,4 @@ namespace LimsUI.Models.ProcessModels
         public string wellName { get; set; }
         public string reagent { get; set; }
     }
-
-    //public class Valueinfo
-    //{
-    //    public string objectTypeName { get; set; }
-    //    public string serializationDataFormat { get; set; }
-    //}
-
 }

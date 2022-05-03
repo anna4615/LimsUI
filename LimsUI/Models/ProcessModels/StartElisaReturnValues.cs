@@ -21,32 +21,5 @@ namespace LimsUI.Models.ProcessModels
         public Plate plate { get; set; }
         public Samples samples { get; set; }
     }
-
-    //public class Tests
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //}
-
-
-    //public class Elisaid
-    //{
-    //    public string type { get; set; }
-    //    public int value { get; set; }
-    //}
-
-
-    //public class Plate
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //}
-
-
-    //public class Samples
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //}
 }
 

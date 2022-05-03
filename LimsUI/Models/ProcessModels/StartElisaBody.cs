@@ -12,12 +12,5 @@ namespace LimsUI.Models.ProcessModels
     {
         public Samples samples { get; set; }
     }
-
-    //public class Samples
-    //{
-    //    public string type { get; set; }
-    //    public string value { get; set; }
-    //}
-
 }
 

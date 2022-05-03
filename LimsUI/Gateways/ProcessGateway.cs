@@ -51,10 +51,16 @@ namespace LimsUI.Gateways
             return layout;
         }
 
-        public async Task SendRawData(SendRawDataBody body)
+        public async Task<SendRawDataReturnValues> SendRawData(SendRawDataBody body)
         {
             HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendRawData"], body);
-            StartElisaReturnValues returnValue = await respons.Content.ReadFromJsonAsync<StartElisaReturnValues>();
+            //SendRawDataReturnValues returnValue = await respons.Content.ReadFromJsonAsync<SendRawDataReturnValues>();
+            string responseString = await respons.Content.ReadAsStringAsync();
+            string trimmedResponse = responseString.Trim('[').Trim(']');
+
+            SendRawDataReturnValues returnValue = JsonSerializer.Deserialize<SendRawDataReturnValues>(trimmedResponse);
+
+            return returnValue;
         }
 
         private async Task<string> GetProcessInstanceId(int elisaId)
