@@ -5,7 +5,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using LimsUI.Models.ProcessModels.SendRawData;
+using LimsUI.Models.ProcessModels;
+using LimsUI.Models.ProcessModels.Variables;
 
 namespace LimsUI.Pages.ElisaPages
 {

@@ -8,8 +8,6 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
-using LimsUI.Models.ProcessModels.StartElisa;
-using LimsUI.Models.ProcessModels.SendRawData;
 
 namespace LimsUI.Gateways
 {
@@ -40,7 +38,7 @@ namespace LimsUI.Gateways
             
             string instanceId = await GetProcessInstanceId(elisaId);
 
-            PlateVariable plateVariable = await GetPlateVariable(instanceId);
+            GetPlateVariableReturnValues plateVariable = await GetPlateVariable(instanceId);
 
             //Skapar layout från properties i plateVariable
             //Well i plateVariable konverteras till Well som anvämds i klassen Layout
@@ -70,13 +68,13 @@ namespace LimsUI.Gateways
             return processInstance.id;
         }
 
-        private async Task<PlateVariable> GetPlateVariable(string instanceId)
+        private async Task<GetPlateVariableReturnValues> GetPlateVariable(string instanceId)
         {
             HttpResponseMessage response = await _client.GetAsync(
                 _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/plate");
 
             string responseString = await response.Content.ReadAsStringAsync();
-            PlateVariable plateVariable = JsonSerializer.Deserialize<PlateVariable>(responseString);
+            GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(responseString);
 
             return plateVariable;
         }

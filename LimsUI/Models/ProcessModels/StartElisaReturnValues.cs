@@ -1,4 +1,6 @@
-﻿namespace LimsUI.Models.ProcessModels
+﻿using LimsUI.Models.ProcessModels.Variables;
+
+namespace LimsUI.Models.ProcessModels
 {
     public class StartElisaReturnValues
     {
@@ -9,10 +11,10 @@
         public bool ended { get; set; }
         public bool suspended { get; set; }
         public object tenantId { get; set; }
-        public Variables variables { get; set; }
+        public StartElisaReturnVariables variables { get; set; }
     }
 
-    public class Variables
+    public class StartElisaReturnVariables
     {
         public Tests tests { get; set; }
         public Elisaid elisaId { get; set; }
@@ -20,31 +22,31 @@
         public Samples samples { get; set; }
     }
 
-    public class Tests
-    {
-        public string type { get; set; }
-        public string value { get; set; }
-    }
+    //public class Tests
+    //{
+    //    public string type { get; set; }
+    //    public string value { get; set; }
+    //}
 
 
-    public class Elisaid
-    {
-        public string type { get; set; }
-        public int value { get; set; }
-    }
+    //public class Elisaid
+    //{
+    //    public string type { get; set; }
+    //    public int value { get; set; }
+    //}
 
 
-    public class Plate
-    {
-        public string type { get; set; }
-        public string value { get; set; }
-    }
+    //public class Plate
+    //{
+    //    public string type { get; set; }
+    //    public string value { get; set; }
+    //}
 
 
-    public class Samples
-    {
-        public string type { get; set; }
-        public string value { get; set; }
-    }
+    //public class Samples
+    //{
+    //    public string type { get; set; }
+    //    public string value { get; set; }
+    //}
 }
 

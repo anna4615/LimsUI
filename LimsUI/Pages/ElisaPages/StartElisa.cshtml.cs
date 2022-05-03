@@ -1,6 +1,6 @@
 using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models.ProcessModels;
-using LimsUI.Models.ProcessModels.StartElisa;
+using LimsUI.Models.ProcessModels.Variables;
 using LimsUI.Models.UIModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -91,9 +91,9 @@ namespace LimsUI.Pages.ElisaPages
         {
             StartElisaBody body = new StartElisaBody
             {
-                variables = new Models.ProcessModels.StartElisa.Variables
+                variables = new StartElisaVariables
                 {
-                    samples = new Models.ProcessModels.StartElisa.Samples
+                    samples = new Samples
                     {
                         type = "String",
                         value = MakeSamplesValue()

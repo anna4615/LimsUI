@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LimsUI.Models.ProcessModels.Variables;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LimsUI.Models.ProcessModels
 {
-    public class PlateVariable
+    public class GetPlateVariableReturnValues
     {
         public string type { get; set; }
         public Value value { get; set; }
@@ -26,10 +27,10 @@ namespace LimsUI.Models.ProcessModels
         public string reagent { get; set; }
     }
 
-    public class Valueinfo
-    {
-        public string objectTypeName { get; set; }
-        public string serializationDataFormat { get; set; }
-    }
+    //public class Valueinfo
+    //{
+    //    public string objectTypeName { get; set; }
+    //    public string serializationDataFormat { get; set; }
+    //}
 
 }
