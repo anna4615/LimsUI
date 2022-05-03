@@ -32,7 +32,7 @@ namespace LimsUI.Gateways
             return returnValue;
         }
 
-        //Använder bisunessKey för att ta fram processens id som används i anrop där processvariabeln "plate" hämtas,
+        //Använder bisunessKey i anrop för att hämta processens id som används i anrop där processvariabeln "plate" hämtas,
         //plate innehåller en lista av Well som används för att skapa lista av Well i Layout 
         public async Task<Layout> GetLayoutForElisaId(int elisaId)
         {

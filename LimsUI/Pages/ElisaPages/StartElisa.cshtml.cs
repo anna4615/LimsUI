@@ -55,7 +55,7 @@ namespace LimsUI.Pages.ElisaPages
 
             if (SelectedIds.Any())
             {
-                Samples = await _sampleGateway.GetSamples();
+                //Samples = await _sampleGateway.GetSamples();
 
                 MakeSelectedSamplesList();
                 StartElisaBody body = MakeStartElisaBody();
