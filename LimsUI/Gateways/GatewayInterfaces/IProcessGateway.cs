@@ -8,9 +8,9 @@ namespace LimsUI.Gateways.GatewayInterfaces
 {
     public interface IProcessGateway
     {
-        Task<ProcessVariables> StartElisa(StartElisaBody body);
-
+        Task<StartElisaReturnValues> StartElisa(StartElisaBody body);
         Task<Layout> GetLayoutForElisaId(int elisaId);
+        //Task SendRawData(SendRawDataBody body);
 
     }
 }

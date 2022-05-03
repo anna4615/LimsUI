@@ -1,6 +1,6 @@
 ﻿namespace LimsUI.Models.ProcessModels
 {
-    public class ProcessVariables
+    public class StartElisaReturnValues
     {
         public string id { get; set; }
         public string definitionId { get; set; }

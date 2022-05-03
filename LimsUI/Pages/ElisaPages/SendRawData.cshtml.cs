@@ -48,8 +48,8 @@ namespace LimsUI.Pages.ElisaPages
         private SendRawDataBody MakeSendRawDataBody()
         {
             int elisaIdValue = SetElisaIdValue();
-            string samplesDataValue = MakeSamplesDataValue();
-            string standardsDataValue = MakeStandardsDataValue();
+            string samplesDataValue = SetSamplesDataValue();
+            string standardsDataValue = SetStandardsDataValue();
 
             SendRawDataBody sendRawDataBody = new SendRawDataBody
             {
@@ -89,7 +89,7 @@ namespace LimsUI.Pages.ElisaPages
             return elisaId;
         }
 
-        private string MakeStandardsDataValue()
+        private string SetStandardsDataValue()
         {
             string standardsDataValue = "[";
 
@@ -117,7 +117,7 @@ namespace LimsUI.Pages.ElisaPages
         }
 
 
-        private string MakeSamplesDataValue()
+        private string SetSamplesDataValue()
         {
             string samplesDataValue = "[";
 

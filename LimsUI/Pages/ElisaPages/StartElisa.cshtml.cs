@@ -60,7 +60,7 @@ namespace LimsUI.Pages.ElisaPages
                 MakeSelectedSamplesList();
                 StartElisaBody body = MakeStartElisaBody();
 
-                ProcessVariables response = await _processGateway.StartElisa(body);
+                StartElisaReturnValues response = await _processGateway.StartElisa(body);
 
                 ElisaId = response.variables.elisaId.value;
 
