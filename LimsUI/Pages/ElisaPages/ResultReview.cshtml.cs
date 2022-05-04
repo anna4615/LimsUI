@@ -7,8 +7,11 @@ using System.Globalization;
 using System.Linq;
 using LimsUI.Models.ProcessModels;
 using LimsUI.Models.ProcessModels.Variables;
+using LimsUI.Models.UIModels;
 using LimsUI.Gateways.GatewayInterfaces;
 using System.Threading.Tasks;
+using LimsUI.Utilities;
+using System.Text.Json;
 
 namespace LimsUI.Pages.ElisaPages
 {
@@ -27,6 +30,12 @@ namespace LimsUI.Pages.ElisaPages
 
         public List<string> ResultLines { get; set; }
 
+        [BindProperty]
+        public Result Result { get; set; }
+
+        [BindProperty]
+        public bool ElisaApproved { get; set; }
+
 
         public void OnGet()
         {
@@ -36,11 +45,21 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
-            ReadSelectedFileToResultLines();
+            if (Result != null)
+            {
+                string s = "";
+            }
 
-            SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
+            //ReadSelectedFileToResultLines();
 
-            SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
+            //SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
+
+            //SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
+            SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
+
+            var v = sendRawDataReturnValues.variables.elisa;
+
+            Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
 
             return Page();
         }

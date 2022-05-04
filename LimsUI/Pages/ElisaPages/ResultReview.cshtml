@@ -16,3 +16,63 @@
         <button type="submit" class="btn btn-primary">OK</button>
     </form>
 </div>
+
+@if (Model.Result != null)
+{
+ 
+    <table class="table table-sm border-bottom">
+
+
+
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Result.Tests[0].sampleId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Result.Tests[0].sampleName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Result.Tests[0].measureValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Result.Tests[0].concentration)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Result.Tests[0].status)
+                <th>
+                    Godkänn
+                </th>
+            </tr>
+        </thead>       
+        <form class="form-group" method="post">
+            <div class="d-flex justify-content-center pb-3">
+                <input type="checkbox" id="ElisaApproved" value="@Model.ElisaApproved">
+                <input type="submit" value="Spara alla resultat" class="btn btn-primary" />
+            </div>
+      @*  </form>*@
+@*        <form class="form-group" method="post">
+            <div class="d-flex justify-content-center pb-3">
+                <input type="submit" value="Spara alla resultat" class="btn btn-primary" />
+            </div>*@
+        <tbody>
+                @foreach (var sample in Model.Result.Tests)
+                {
+                <tr class="border-bottom">
+                    <td>@sample.sampleId</td>
+                    <td>@sample.sampleName</td>
+                    <td>@sample.measureValue</td>
+                    <td>@sample.concentration</td>
+                    <td>@sample.status</td>
+                    <td class="form-group form-check">
+                        <input type="checkbox" name="@sample.approved" value="@sample.sampleId">
+                    </td>
+                </tr>
+                }
+        </tbody>
+        </form>
+    </table>
+
+
+
+}

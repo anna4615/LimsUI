@@ -21,7 +21,7 @@ namespace LimsUI.Models.ProcessModels
 
     public class SendRawDataReturnVariables
     {
-        public Elisa elisa { get; set; }
+        public ElisaResult elisa { get; set; }
         public Tests tests { get; set; }
         public Elisaid elisaId { get; set; }
         public Samplesdata samplesData { get; set; }
