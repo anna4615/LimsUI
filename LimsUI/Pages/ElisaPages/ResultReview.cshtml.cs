@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace LimsUI.Pages.ElisaPages
 {
-    public class SendRawDataModel : PageModel
+    public class ResultReviewModel : PageModel
     {
         private readonly IProcessGateway _processGateway;
 
-        public SendRawDataModel(IProcessGateway processGateway)
+        public ResultReviewModel(IProcessGateway processGateway)
         {            
             _processGateway = processGateway;
         }
@@ -25,16 +25,18 @@ namespace LimsUI.Pages.ElisaPages
         [BindProperty]
         public IFormFile SelectedFile { get; set; }
 
-        public List<string> Results { get; set; }
+        public List<string> ResultLines { get; set; }
+
 
         public void OnGet()
         {
 
         }
 
+
         public async Task<IActionResult> OnPost()
         {
-            ReadSelectedFileToResults();
+            ReadSelectedFileToResultLines();
 
             SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
 
@@ -44,19 +46,22 @@ namespace LimsUI.Pages.ElisaPages
         }
 
 
-        private void ReadSelectedFileToResults()
+
+
+        private void ReadSelectedFileToResultLines()
         {
             Stream stream = SelectedFile.OpenReadStream();
             StreamReader reader = new StreamReader(stream);
 
-            Results = new List<string>();
+            ResultLines = new List<string>();
             string line;
 
             while ((line = reader.ReadLine()) != null)
             {
-                Results.Add(line);
+                ResultLines.Add(line);
             }
         }
+
 
         private SendRawDataBody MakeSendRawDataBody()
         {
@@ -95,30 +100,66 @@ namespace LimsUI.Pages.ElisaPages
             return sendRawDataBody;
         }
 
+
         private int SetElisaIdValue()
         {
-            int elisaId = int.Parse(Results[1]);
+            int elisaId = int.Parse(ResultLines[1]);
 
             return elisaId;
+        }       
+
+
+        private string SetSamplesDataValue()
+        {
+            string samplesDataValue = "[";
+
+            foreach (var line in ResultLines)
+            {
+                string[] values = line.Split(";");
+
+                //splitString.Length > 1 -> tar inte med inledande rader som innehåller elisaId, se wwwroot/result_exemple.csv
+                //TryParse -> hoppa över rubikrader
+                if (values.Length > 1 &&
+                    int.TryParse(values[0], out int pos))
+                {
+                    //pos > 72 -> samples har position 1-72 
+                    if (pos > 72)
+                    {
+                        break;
+                    }
+
+                    int sampleId = int.Parse(values[1]);
+                    string name = values[2];
+                    float measValue = float.Parse(values[3]);
+                    samplesDataValue += $"{{\"pos\":{pos},\"sampleId\":{sampleId},\"name\":\"{name}\",\"measValue\":{SetPointSeparator(measValue)}}},";
+                    
+                }
+            }
+
+            samplesDataValue = samplesDataValue.Trim(',');
+            samplesDataValue += "]";
+
+            return samplesDataValue;
         }
+
 
         private string SetStandardsDataValue()
         {
             string standardsDataValue = "[";
 
-            foreach (var result in Results)
+            foreach (var line in ResultLines)
             {
-                string[] splitString = result.Split(";");
+                string[] values = line.Split(";");
 
-                //splitString.Length > 1 -> tar inte med inledande rader som innehåller elisaId
+                //values.Length > 1 -> tar inte med inledande rader som innehåller elisaId, se wwwroot/result_exemple.csv
                 //TryParse -> hoppa över rubikrader
                 //pos > 72 -> standards har position 73-96 
-                if (splitString.Length > 1 && 
-                    int.TryParse(splitString[0], out int pos) &&  
+                if (values.Length > 1 &&
+                    int.TryParse(values[0], out int pos) &&
                     pos > 72)
                 {
-                    float conc = float.Parse(splitString[1]);
-                    float measValue = float.Parse(splitString[2]);
+                    float conc = float.Parse(values[1]);
+                    float measValue = float.Parse(values[2]);
                     standardsDataValue += $"{{\"pos\":{pos},\"concentration\":{SetPointSeparator(conc)},\"measValue\":{SetPointSeparator(measValue)}}},";
                 }
             }
@@ -129,39 +170,6 @@ namespace LimsUI.Pages.ElisaPages
             return standardsDataValue;
         }
 
-
-        private string SetSamplesDataValue()
-        {
-            string samplesDataValue = "[";
-
-            foreach (var result in Results)
-            {
-                string[] splitString = result.Split(";");
-
-                //splitString.Length > 1 -> tar inte med inledande rader som innehåller elisaId
-                //TryParse -> hoppa över rubikrader
-                if (splitString.Length > 1 &&
-                    int.TryParse(splitString[0], out int pos))
-                {
-                    //pos > 72 -> samples har position 1-72 
-                    if (pos > 72)
-                    {
-                        break;
-                    }
-
-                    int sampleId = int.Parse(splitString[1]);
-                    string name = splitString[2];
-                    float measValue = float.Parse(splitString[3]);
-                    samplesDataValue += $"{{\"pos\":{pos},\"sampleId\":{sampleId},\"name\":\"{name}\",\"measValue\":{SetPointSeparator(measValue)}}},";
-                    
-                }
-            }
-
-            samplesDataValue = samplesDataValue.Trim(',');
-            samplesDataValue += "]";
-
-            return samplesDataValue;
-        }       
 
 
         private string SetPointSeparator(float number)
