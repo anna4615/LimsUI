@@ -12,7 +12,7 @@ namespace LimsUI.Utilities
             SendRawDataReturnValues sendRawDataReturnValues = new SendRawDataReturnValues
             {
                 resultType = "Execution",
-                execution = new Execution
+                execution = new SendRawDataReturnValuesExecution
                 {
                     id = "77e36c07-c9fb-11ec-8c91-005056c00001",
                     processInstanceId = "77deb106-c9fb-11ec-8c91-005056c00001",
@@ -20,7 +20,7 @@ namespace LimsUI.Utilities
                     tenantId = null
                 },
                 processInstance = null,
-                variables = new SendRawDataReturnVariables
+                variables = new SendRawDataReturnValuesVariables
                 {
                     elisa = new ElisaResult
                     {

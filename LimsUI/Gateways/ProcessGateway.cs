@@ -53,7 +53,7 @@ namespace LimsUI.Gateways
 
         public async Task<SendRawDataReturnValues> SendRawData(SendRawDataBody body)
         {
-            HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendRawData"], body);
+            HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendMessage"], body);
             //SendRawDataReturnValues returnValue = await respons.Content.ReadFromJsonAsync<SendRawDataReturnValues>();
             string responseString = await respons.Content.ReadAsStringAsync();
             string trimmedResponse = responseString.Trim('[').Trim(']');
@@ -103,6 +103,16 @@ namespace LimsUI.Gateways
             return wellsList.OrderBy(w => w.Position).ToList();
         }
 
+        public async Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body)
+        {
+            HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendMessage"], body);
+            //SendRawDataReturnValues returnValue = await respons.Content.ReadFromJsonAsync<SendRawDataReturnValues>();
+            string responseString = await respons.Content.ReadAsStringAsync();
+            string trimmedResponse = responseString.Trim('[').Trim(']');
 
+            ResultReviewedReturnValues returnValue = JsonSerializer.Deserialize<ResultReviewedReturnValues>(trimmedResponse);
+
+            return returnValue;
+        }
     }
 }

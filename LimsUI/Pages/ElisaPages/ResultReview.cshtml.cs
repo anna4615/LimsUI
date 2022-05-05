@@ -20,7 +20,7 @@ namespace LimsUI.Pages.ElisaPages
         private readonly IProcessGateway _processGateway;
 
         public ResultReviewModel(IProcessGateway processGateway)
-        {            
+        {
             _processGateway = processGateway;
         }
 
@@ -54,51 +54,23 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
-
-
-            if (Result != null)
+            if (ResultReviewed == false)
             {
-                string s = "";
+                ReadSelectedFileToResultLines();
+
+                SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
+
+                SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
+                //SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
+
+                Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
             }
 
-            //ReadSelectedFileToResultLines();
-
-            //SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
-
-            //SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
-            SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
-
-            var v = sendRawDataReturnValues.variables.elisa;
-
-            Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
-
-            ResultReviewedBody body = new ResultReviewedBody
+            if (ResultReviewed)
             {
-                messageName = "resultReviewed",
-                correlationKeys = new ResultReviewedBodyCorrelationkeys
-                {
-                    elisaId = new ElisaId
-                    {
-                        type = "Integer",
-                        value = ReviewedResult.ElisaId
-                    }
-                },
-                processVariables = new ResultReviewedBodyProcessvariables
-                {
-                    experimentOk = new ExperimentOk
-                    {
-                        type = "Boolean",
-                        value = ReviewedResult.Approved
-                    },
-                    redo = new Redo
-                    {
-                        type = "Boolean",
-                        value = ReviewedResult.Redo
-                    }
-                },
-                resultEnabled = true,
-                variablesInResultEnabled = true
-            };
+                ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
+                ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
+            }
 
             return Page();
         }
@@ -164,7 +136,7 @@ namespace LimsUI.Pages.ElisaPages
             int elisaId = int.Parse(ResultLines[1]);
 
             return elisaId;
-        }       
+        }
 
 
         private string SetSamplesDataValue()
@@ -190,7 +162,7 @@ namespace LimsUI.Pages.ElisaPages
                     string name = values[2];
                     float measValue = float.Parse(values[3]);
                     samplesDataValue += $"{{\"pos\":{pos},\"sampleId\":{sampleId},\"name\":\"{name}\",\"measValue\":{SetPointSeparator(measValue)}}},";
-                    
+
                 }
             }
 
@@ -228,11 +200,43 @@ namespace LimsUI.Pages.ElisaPages
             return standardsDataValue;
         }
 
-
-
         private string SetPointSeparator(float number)
         {
             return number.ToString(CultureInfo.CreateSpecificCulture("en-GB"));
+        }
+
+
+        public ResultReviewedBody MakeResultReviewedBody()
+        {
+            ResultReviewedBody body = new ResultReviewedBody
+            {
+                messageName = "resultReviewed",
+                correlationKeys = new ResultReviewedBodyCorrelationkeys
+                {
+                    elisaId = new ElisaId
+                    {
+                        type = "Integer",
+                        value = ReviewedResult.ElisaId
+                    }
+                },
+                processVariables = new ResultReviewedBodyProcessvariables
+                {
+                    experimentOk = new ExperimentOk
+                    {
+                        type = "Boolean",
+                        value = ReviewedResult.Approved
+                    },
+                    redo = new Redo
+                    {
+                        type = "Boolean",
+                        value = ReviewedResult.Redo
+                    }
+                },
+                resultEnabled = true,
+                variablesInResultEnabled = true
+            };
+
+            return body;
         }
     }
 }
