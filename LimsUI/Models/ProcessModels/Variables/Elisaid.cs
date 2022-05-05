@@ -1,6 +1,6 @@
 ﻿namespace LimsUI.Models.ProcessModels.Variables
 {
-    public class Elisaid
+    public class ElisaId
     {
         public string type { get; set; }
         public int value { get; set; }

@@ -19,11 +19,8 @@
 
 @if (Model.Result != null)
 {
- 
-    <table class="table table-sm border-bottom">
 
-
-
+    <table class="table table-sm border-bottom" style="table-layout: auto !important">
         <thead>
             <tr>
                 <th>
@@ -40,33 +37,48 @@
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Result.Tests[0].status)
-                <th>
-                    Godkänn
                 </th>
+                @*<th>
+                    Godkänn
+                    </th>*@
             </tr>
-        </thead>       
+        </thead>
         <form class="form-group" method="post">
             <div class="d-flex justify-content-center pb-3">
-                <input type="checkbox" id="ElisaApproved" value="@Model.ElisaApproved">
+                <input asp-for="ReviewedResult.Approved">
+                <input asp-for="ReviewedResult.ElisaId" value="@Model.Result.ElisaId" hidden>
+                <input asp-for="ResultReviewed" checked hidden>
                 <input type="submit" value="Spara alla resultat" class="btn btn-primary" />
             </div>
-      @*  </form>*@
-@*        <form class="form-group" method="post">
-            <div class="d-flex justify-content-center pb-3">
-                <input type="submit" value="Spara alla resultat" class="btn btn-primary" />
-            </div>*@
         <tbody>
-                @foreach (var sample in Model.Result.Tests)
+                @for (int i = 0; i < Model.Result.Tests.Count; i++)
                 {
+                <input asp-for="@Model.ReviewedResult.Tests[i].elisaId" value="@Model.Result.Tests[i].elisaId" hidden>
+                <input asp-for="@Model.ReviewedResult.Tests[i].id" value="@Model.Result.Tests[i].id" hidden>
                 <tr class="border-bottom">
-                    <td>@sample.sampleId</td>
-                    <td>@sample.sampleName</td>
-                    <td>@sample.measureValue</td>
-                    <td>@sample.concentration</td>
-                    <td>@sample.status</td>
-                    <td class="form-group form-check">
-                        <input type="checkbox" name="@sample.approved" value="@sample.sampleId">
+                    <td>
+                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleId"
+                       value="@Model.Result.Tests[i].sampleId" readonly>
                     </td>
+                    <td>
+                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleName"
+                       value="@Model.Result.Tests[i].sampleName" readonly>
+                    </td>
+                    <td>
+                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].measureValue"
+                       value="@Model.Result.Tests[i].measureValue" readonly>
+                    </td>
+                    <td>
+                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].concentration"
+                       value="@Math.Round(Model.Result.Tests[i].concentration, 1)" readonly>
+                    </td>
+                    <td>
+                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].status"
+                       value="@Model.Result.Tests[i].status" readonly>
+                    </td>
+                        @*                    <td>
+                            <input asp-for="@Model.Result.Tests[i].approved">
+                            </td>*@
                 </tr>
                 }
         </tbody>

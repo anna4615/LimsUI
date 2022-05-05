@@ -38,7 +38,7 @@ namespace LimsUI.Utilities
                         value = "[{\"id\":68,\"sampleId\":1,\"elisaId\":38,\"sampleName\":\"Prov1\",\"measureValue\":0.0,\"concentration\":0.0,\"platePosition\":1,\"status\":\"In Progress\"},{\"id\":69,\"sampleId\":2,\"elisaId\":38,\"sampleName\":\"Prov2\",\"measureValue\":0.0,\"concentration\":0.0,\"platePosition\":2,\"status\":\"In Progress\"}]",
                         valueInfo = new Valueinfo()
                     },
-                    elisaId = new Elisaid
+                    elisaId = new ElisaId
                     {
                         type = "Integer",
                         value = 38,

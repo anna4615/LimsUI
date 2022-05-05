@@ -30,11 +30,20 @@ namespace LimsUI.Pages.ElisaPages
 
         public List<string> ResultLines { get; set; }
 
-        [BindProperty]
         public Result Result { get; set; }
 
         [BindProperty]
+        public Result ReviewedResult { get; set; }
+
+        [BindProperty]
+        public bool ResultReviewed { get; set; }
+
+
+        [BindProperty]
         public bool ElisaApproved { get; set; }
+
+        [BindProperty]
+        public List<Test> Tests { get; set; }
 
 
         public void OnGet()
@@ -45,6 +54,8 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
+
+
             if (Result != null)
             {
                 string s = "";
@@ -60,6 +71,34 @@ namespace LimsUI.Pages.ElisaPages
             var v = sendRawDataReturnValues.variables.elisa;
 
             Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
+
+            ResultReviewedBody body = new ResultReviewedBody
+            {
+                messageName = "resultReviewed",
+                correlationKeys = new ResultReviewedBodyCorrelationkeys
+                {
+                    elisaId = new ElisaId
+                    {
+                        type = "Integer",
+                        value = ReviewedResult.ElisaId
+                    }
+                },
+                processVariables = new ResultReviewedBodyProcessvariables
+                {
+                    experimentOk = new ExperimentOk
+                    {
+                        type = "Boolean",
+                        value = ReviewedResult.Approved
+                    },
+                    redo = new Redo
+                    {
+                        type = "Boolean",
+                        value = ReviewedResult.Redo
+                    }
+                },
+                resultEnabled = true,
+                variablesInResultEnabled = true
+            };
 
             return Page();
         }
@@ -91,15 +130,15 @@ namespace LimsUI.Pages.ElisaPages
             SendRawDataBody sendRawDataBody = new SendRawDataBody
             {
                 messageName = "receiveData",
-                correlationKeys = new Correlationkeys
+                correlationKeys = new SendRawDataBodyCorrelationkeys
                 {
-                    elisaId = new Elisaid
+                    elisaId = new ElisaId
                     {
                         type = "Integer",
                         value = elisaIdValue
                     }
                 },
-                processVariables = new Processvariables
+                processVariables = new SendRawDataBodyProcessvariables
                 {
                     samplesData = new Samplesdata
                     {

@@ -23,7 +23,7 @@ namespace LimsUI.Models.ProcessModels
     {
         public ElisaResult elisa { get; set; }
         public Tests tests { get; set; }
-        public Elisaid elisaId { get; set; }
+        public ElisaId elisaId { get; set; }
         public Samplesdata samplesData { get; set; }
         public Plate plate { get; set; }
         public Samples samples { get; set; }

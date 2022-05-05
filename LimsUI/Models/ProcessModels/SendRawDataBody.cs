@@ -5,18 +5,18 @@ namespace LimsUI.Models.ProcessModels
     public class SendRawDataBody
     {
         public string messageName { get; set; }
-        public Correlationkeys correlationKeys { get; set; }
-        public Processvariables processVariables { get; set; }
+        public SendRawDataBodyCorrelationkeys correlationKeys { get; set; }
+        public SendRawDataBodyProcessvariables processVariables { get; set; }
         public bool resultEnabled { get; set; }
         public bool variablesInResultEnabled { get; set; }
     }
 
-    public class Correlationkeys
+    public class SendRawDataBodyCorrelationkeys
     {
-        public Elisaid elisaId { get; set; }
+        public ElisaId elisaId { get; set; }
     }
 
-    public class Processvariables
+    public class SendRawDataBodyProcessvariables
     {
         public Standardsdata standardsData { get; set; }
         public Samplesdata samplesData { get; set; }

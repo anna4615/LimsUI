@@ -17,7 +17,7 @@ namespace LimsUI.Models.ProcessModels
     public class StartElisaReturnVariables
     {
         public Tests tests { get; set; }
-        public Elisaid elisaId { get; set; }
+        public ElisaId elisaId { get; set; }
         public Plate plate { get; set; }
         public Samples samples { get; set; }
     }
