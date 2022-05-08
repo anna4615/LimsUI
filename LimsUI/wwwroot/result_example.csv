@@ -1,7 +1,8 @@
 elisaId
-53
+66
 pos;sampleId;name;measValue
-1;2;Prov2;0,876
+1;9;Prov10;0,876
+1;10;Prov11;0,234
 pos;concentration;measValue
 73;2;0,01
 74;4;0,02

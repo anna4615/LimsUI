@@ -10,81 +10,91 @@
         <div>
             <input type="file" name="SelectedFile" />
         </div>
-
-        <br />
-
-        <button type="submit" class="btn btn-primary">OK</button>
+        <div class="py-3">
+            <button type="submit" class="btn btn-primary">OK</button>
+        </div>
     </form>
 </div>
 
 @if (Model.Result != null)
 {
-
-    <table class="table table-sm border-bottom">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Result.Tests[0].sampleId)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Result.Tests[0].sampleName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Result.Tests[0].measureValue)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Result.Tests[0].concentration)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Result.Tests[0].status)
-                </th>
-                @*<th>
-                    Godkänn
-                    </th>*@
-            </tr>
-        </thead>
+    <div class="pt-5">
         <form class="form-group" method="post">
-            <div class="d-flex justify-content-center pb-3">
-                <input asp-for="ReviewedResult.Approved">
+            <table class="table table-sm border-bottom">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.Tests[0].sampleId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.Tests[0].sampleName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.Tests[0].measureValue)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Result.Tests[0].concentration)
+                        </th>
+@*                        <th>
+                            @Html.DisplayNameFor(model => model.Result.Tests[0].status)
+                        </th>*@
+                        @*<th>
+                            Godkänn
+                            </th>*@
+                    </tr>
+                </thead>
+                @*     <form class="form-group" method="post">*@
+
+                <tbody>
+                    @for (int i = 0; i < Model.Result.Tests.Count; i++)
+                    {
+                        <input asp-for="@Model.ReviewedResult.Tests[i].elisaId" value="@Model.Result.Tests[i].elisaId" hidden>
+                        <input asp-for="@Model.ReviewedResult.Tests[i].id" value="@Model.Result.Tests[i].id" hidden>
+                        <tr class="border-bottom">
+                            <td>
+                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleId"
+                               value="@Model.Result.Tests[i].sampleId" readonly>
+                            </td>
+                            <td>
+                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleName"
+                               value="@Model.Result.Tests[i].sampleName" readonly>
+                            </td>
+                            <td>
+                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].measureValue"
+                               value="@Model.Result.Tests[i].measureValue" readonly>
+                            </td>
+                            <td>
+                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].concentration"
+                               value="@Math.Round(Model.Result.Tests[i].concentration, 1)" readonly>
+                            </td>
+@*                            <td>
+                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].status"
+                               value="@Model.Result.Tests[i].status" readonly>
+                            </td>*@
+                            @*                    <td>
+                                <input asp-for="@Model.Result.Tests[i].approved">
+                                </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center pt-3">
                 <input asp-for="ReviewedResult.ElisaId" value="@Model.Result.ElisaId" hidden>
                 <input asp-for="ResultReviewed" checked hidden>
-                <input type="submit" value="Spara alla resultat" class="btn btn-primary" />
+                <div>
+                    <label asp-for="ReviewedResult.Approved"></label>
+                    <input asp-for="ReviewedResult.Approved">
+                </div>
+                <div class="pl-3">
+                    <label asp-for="ReviewedResult.Redo"></label>
+                    <input asp-for="ReviewedResult.Redo">
+                </div>
             </div>
-        <tbody>
-                @for (int i = 0; i < Model.Result.Tests.Count; i++)
-                {
-                <input asp-for="@Model.ReviewedResult.Tests[i].elisaId" value="@Model.Result.Tests[i].elisaId" hidden>
-                <input asp-for="@Model.ReviewedResult.Tests[i].id" value="@Model.Result.Tests[i].id" hidden>
-                <tr class="border-bottom">
-                    <td>
-                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleId"
-                       value="@Model.Result.Tests[i].sampleId" readonly>
-                    </td>
-                    <td>
-                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleName"
-                       value="@Model.Result.Tests[i].sampleName" readonly>
-                    </td>
-                    <td>
-                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].measureValue"
-                       value="@Model.Result.Tests[i].measureValue" readonly>
-                    </td>
-                    <td>
-                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].concentration"
-                       value="@Math.Round(Model.Result.Tests[i].concentration, 1)" readonly>
-                    </td>
-                    <td>
-                        <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].status"
-                       value="@Model.Result.Tests[i].status" readonly>
-                    </td>
-                        @*                    <td>
-                            <input asp-for="@Model.Result.Tests[i].approved">
-                            </td>*@
-                </tr>
-                }
-        </tbody>
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="OK" class="btn btn-primary" />
+            </div>
         </form>
-    </table>
 
-
+    </div>
 
 }

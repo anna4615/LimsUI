@@ -39,13 +39,6 @@ namespace LimsUI.Pages.ElisaPages
         public bool ResultReviewed { get; set; }
 
 
-        [BindProperty]
-        public bool ElisaApproved { get; set; }
-
-        [BindProperty]
-        public List<Test> Tests { get; set; }
-
-
         public void OnGet()
         {
 
@@ -54,6 +47,8 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
+
+            // Kolla om selectedfile är null istället
             if (ResultReviewed == false)
             {
                 ReadSelectedFileToResultLines();
@@ -61,7 +56,7 @@ namespace LimsUI.Pages.ElisaPages
                 SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
 
                 SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
-                //SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
+                // SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
 
                 Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
             }
