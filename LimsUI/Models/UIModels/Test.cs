@@ -24,6 +24,8 @@ namespace LimsUI.Models.UIModels
         [Display(Name = "Status")]
         public string status { get; set; }
 
+        public Sample Sample { get; set; }
+
         //[Display(Name = "Godkänd")]
         //public bool approved { get; set; }
 

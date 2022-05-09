@@ -10,5 +10,9 @@ namespace LimsUI.Models.UIModels
         public DateTime DateAdded { get; set; }
 
         //public List<Test> Tests { get; set; }
+
+
+
+
     }
 }

@@ -30,10 +30,10 @@ namespace LimsUI.Pages.ElisaPages
 
         public List<string> ResultLines { get; set; }
 
-        public Result Result { get; set; }
+        public Elisa Result { get; set; }
 
         [BindProperty]
-        public Result ReviewedResult { get; set; }
+        public Elisa ReviewedResult { get; set; }
 
         [BindProperty]
         public bool ResultReviewed { get; set; }
@@ -56,15 +56,19 @@ namespace LimsUI.Pages.ElisaPages
                 SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
 
                 SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
-                // SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
+                //SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
 
-                Result = JsonSerializer.Deserialize<Result>(sendRawDataReturnValues.variables.elisa.value);
+                Result = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
             }
 
-            if (ResultReviewed)
+            if (ResultReviewed && Result.Status.ToLower() == "approved")
             {
                 ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
                 ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
+                
+                int elisaId = resultReviewedReturnValues.variables.elisaId.value;
+
+                return Redirect($"./ElisaResult/?elisaId={elisaId}");
             }
 
             return Page();
@@ -211,7 +215,7 @@ namespace LimsUI.Pages.ElisaPages
                     elisaId = new ElisaId
                     {
                         type = "Integer",
-                        value = ReviewedResult.ElisaId
+                        value = ReviewedResult.Id
                     }
                 },
                 processVariables = new ResultReviewedBodyProcessvariables

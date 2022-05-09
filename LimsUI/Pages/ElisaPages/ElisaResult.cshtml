@@ -1,0 +1,67 @@
+﻿@page
+@model LimsUI.Pages.ElisaPages.ElisaResultModel
+@{
+}
+
+<div class="text-center">
+    <h2>Resultat för Elisa</h2>
+</div>
+
+@if (Model.ElisaResult == null)
+{
+     <p>Hittade ingen Elisa med id @Model.ElisaId.</p>
+}
+
+else
+{
+    @if (Model.ElisaResult.Status.ToLower() == "approved")
+    {
+        <div>
+            <p>Elisa id: @Model.ElisaResult.Id</p>
+        </div>
+        <table class="table table-sm border-bottom">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElisaResult.Tests[0].Sample.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElisaResult.Tests[0].Sample.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ElisaResult.Tests[0].Sample.Concentration)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var test in Model.ElisaResult.Tests)
+                {
+                    <tr class="border-bottom">
+                        <td>@test.Sample.Id</td>
+                        <td>@test.Sample.Name</td>
+                        @if (test.status.ToLower() == "approved")
+                        {
+                            <td>@Math.Round((float)test.Sample.Concentration, 1)</td>
+                        }
+                        else
+                        {
+                            <td>Testet misslyckades</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    else
+    {
+        if (Model.ElisaResult.Status.ToLower() == "failed")
+        {
+            <p>Elisa med id @Model.ElisaResult.Id misslyckades.</p>
+        }
+        if (Model.ElisaResult.Status.ToLower() == "in progress")
+        {
+            <p>Elisa med id @Model.ElisaResult.Id är pågående.</p>            
+        }
+    }
+}

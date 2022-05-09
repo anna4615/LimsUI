@@ -3,6 +3,7 @@ using GraphQL.Client.Abstractions;
 using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models.UIModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LimsUI.Gateways
@@ -15,6 +16,7 @@ namespace LimsUI.Gateways
         {
             _client = client;
         }
+
 
         public async Task<List<Sample>> GetSamples()
         {
@@ -40,6 +42,35 @@ namespace LimsUI.Gateways
 
             return samples;
 
+        }
+
+
+        public async Task<Elisa> GetResultForElisa(int elisaId)
+        {
+            GraphQLRequest query = new GraphQLRequest
+            {
+                Query = $@"query {{
+                            elisas(where:{{ id: {{ eq: {elisaId}}}}}){{
+		                        id
+		                        status
+		                        dateFinished
+		                        tests{{	
+                                    status
+			                        sample{{
+				                    id
+				                    name
+				                    concentration				
+			                    }}
+		                    }}
+	                    }}
+                    }}"
+            };
+
+            GraphQLResponse<ElisaList> response = await _client.SendQueryAsync<ElisaList>(query);
+
+            List<Elisa> results = response.Data.Elisas;
+
+            return results.FirstOrDefault();
         }
     }
 }

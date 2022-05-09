@@ -7,5 +7,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
     public interface ISampleGateway
     {
         Task<List<Sample>> GetSamples();
+
+        Task<Elisa> GetResultForElisa(int elisaId);
     }
 }
