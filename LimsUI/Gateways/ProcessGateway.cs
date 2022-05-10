@@ -31,6 +31,7 @@ namespace LimsUI.Gateways
             return returnValue;
         }
 
+
         //Använder bisunessKey i anrop för att ta fram processens id som används i anrop där processvariabeln "plate" hämtas,
         //plate innehåller en lista av Well som används för att skapa lista av Well i Layout 
         public async Task<Layout> GetLayoutForElisaId(int elisaId)
@@ -51,6 +52,7 @@ namespace LimsUI.Gateways
             return layout;
         }
 
+
         public async Task<SendRawDataReturnValues> SendRawData(SendRawDataBody body)
         {
             HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendMessage"], body);
@@ -62,6 +64,7 @@ namespace LimsUI.Gateways
 
             return returnValue;
         }
+
 
         private async Task<string> GetProcessInstanceId(int elisaId)
         {

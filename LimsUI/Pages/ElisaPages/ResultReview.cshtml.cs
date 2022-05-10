@@ -61,7 +61,7 @@ namespace LimsUI.Pages.ElisaPages
                 Result = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
             }
 
-            if (ResultReviewed && Result.Status.ToLower() == "approved")
+            if (ResultReviewed)
             {
                 ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
                 ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
