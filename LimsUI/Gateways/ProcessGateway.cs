@@ -42,7 +42,7 @@ namespace LimsUI.Gateways
             GetPlateVariableReturnValues plateVariable = await GetPlateVariable(instanceId);
 
             //Skapar layout från properties i plateVariable
-            //Well i plateVariable konverteras till Well som anvämds i klassen Layout
+            //Well i plateVariable konverteras till Well som används i klassen Layout
             Layout layout = new Layout
             {
                 ElisaId = plateVariable.value.elisaId,

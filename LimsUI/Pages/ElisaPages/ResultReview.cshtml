@@ -1,6 +1,10 @@
 ﻿@page
+
+@using System.Globalization
+
 @model LimsUI.Pages.ElisaPages.ResultReviewModel
 @{
+    NumberFormatInfo PointDecimalSeparator = new NumberFormatInfo{ NumberDecimalSeparator = "." };
 }
 
 
@@ -18,6 +22,8 @@
 
 @if (Model.Result != null)
 {
+    <div id="standardCurve" style="height: 350px; width: 800px"></div>
+
     <div class="pt-5">
         <form class="form-group" method="post">
             <table class="table table-sm border-bottom">
@@ -94,7 +100,45 @@
                 <input type="submit" value="OK" class="btn btn-primary" />
             </div>
         </form>
-
     </div>
+
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', { packages: ['corechart'], 'language': 'sv'});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+                ['Koncentration','Mätvärde'],
+         @foreach (var data in Model.StandardDatas)
+        {
+            //Gör om decimaltal till string och specar decimaltecken till punkt, om
+            //man skickar double som den är gör Chrome om decimaltecknet till ett komma vilket 
+            //inte Google charts förstår.
+            string conc = data.Concentration.ToString(PointDecimalSeparator);
+            string measureValue = data.MeasureValue.ToString(PointDecimalSeparator);
+            <text>[@conc, @measureValue],</text>
+        }
+        ]);
+
+        var options = {
+            title: 'Standardkurva',
+            chartArea: { width: '50%' },
+            trendlines: {
+                0: {
+                    type: 'linear',
+                    showR2: true,
+                    visibleInLegend: true
+                }
+            },
+            hAxis: { title: 'Koncentration (ug/ml)' },
+            vAxis: { title: 'Mätvärde (A405)' }
+        };
+
+        var chartLinear = new google.visualization.ScatterChart(document.getElementById('standardCurve'));
+        chartLinear.draw(data, options);
+    }
+</script>
 
 }

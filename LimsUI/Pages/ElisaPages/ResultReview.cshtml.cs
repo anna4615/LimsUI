@@ -38,6 +38,8 @@ namespace LimsUI.Pages.ElisaPages
         [BindProperty]
         public bool ResultReviewed { get; set; }
 
+        public List<StandardData> StandardDatas { get; set; }
+
 
         public void OnGet()
         {
@@ -59,6 +61,8 @@ namespace LimsUI.Pages.ElisaPages
                 //SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
 
                 Result = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
+                StandardDatas = JsonSerializer.Deserialize<List<StandardData>>(sendRawDataReturnValues.variables.standardsData.value);
+
             }
 
             if (ResultReviewed)
