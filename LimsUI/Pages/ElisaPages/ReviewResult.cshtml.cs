@@ -24,58 +24,36 @@ namespace LimsUI.Pages.ElisaPages
             _processGateway = processGateway;
         }
 
-
-        //[BindProperty]
-        //public IFormFile SelectedFile { get; set; }
-
-        //public List<string> ResultLines { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int ElisaId { get; set; }
 
         public Elisa Elisa { get; set; }
 
         [BindProperty]
         public Elisa ReviewedResult { get; set; }
 
-        [BindProperty]
-        public bool ResultReviewed { get; set; }
+        //[BindProperty]
+        //public bool ResultReviewed { get; set; }
 
         public List<StandardData> StandardDatas { get; set; }
 
 
         public void OnGet()
         {
-
+            Elisa = HttpContext.Session.GetElisaFromCookie("SendRawDataReturnValues");
+            StandardDatas = HttpContext.Session.GetStandardDataFromCookie("SendRawDataReturnValues");
         }
 
 
         public async Task<IActionResult> OnPost()
         {
+            ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
+            ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
 
-            // Kolla om selectedfile är null istället
-            if (ResultReviewed == false)
-            {
-                //ReadSelectedFileToResultLines();
+            int elisaId = resultReviewedReturnValues.variables.elisaId.value;
 
-                //SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
+            return Redirect($"./ElisaResult/?elisaId={elisaId}");
 
-                //SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
-                ////SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
-
-                //Result = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
-                //StandardDatas = JsonSerializer.Deserialize<List<StandardData>>(sendRawDataReturnValues.variables.standardsData.value);
-
-            }
-
-            if (ResultReviewed)
-            {
-                ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
-                ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
-                
-                int elisaId = resultReviewedReturnValues.variables.elisaId.value;
-
-                return Redirect($"./ElisaResult/?elisaId={elisaId}");
-            }
-
-            return Page();
         }
 
 

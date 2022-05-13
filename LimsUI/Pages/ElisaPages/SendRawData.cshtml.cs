@@ -49,15 +49,11 @@ namespace LimsUI.Pages.ElisaPages
             SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
 
             HttpContext.Session.SetSendRawDataReturnValues("SendRawDataReturnValues", sendRawDataReturnValues);
-            Elisa = HttpContext.Session.GetElisaFromCookie("SendRawDataReturnValues");
-            StandardDatas = HttpContext.Session.GetStandardDataFromCookie("SendRawDataReturnValues");
 
 
-            //hämta Elisa och StandardDatas från cookie på ReviewResult
             Elisa = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
-            StandardDatas = JsonSerializer.Deserialize<List<StandardData>>(sendRawDataReturnValues.variables.standardsData.value);
-
-            return Redirect($"./ResultReview/{Elisa.Id}");
+           
+            return Redirect($"./ReviewResult/?ElisaId={Elisa.Id}");
         }
 
 

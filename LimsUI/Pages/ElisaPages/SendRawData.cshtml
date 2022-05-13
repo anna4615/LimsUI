@@ -3,15 +3,28 @@
 @{
 }
 
+@*<h4 class="pb-3">Välj rådata-fil för beräkning av koncentrationer</h4>*@
 
 
-<div>
-    <form method="post" enctype="multipart/form-data">
-        <div>
-            <input type="file" name="SelectedFile" />
+<div class="container">
+    <div class="row justify-content-between pb-3">
+        <div class="col">
+            <h4 class="pb-3">Välj rådata-fil för beräkning av koncentrationer</h4>
         </div>
-        <div class="py-3">
-            <button type="submit" class="btn btn-primary">OK</button>
+        <div class="col-auto">
+            <img src="../img/ElisaPlate.jpg" height="100" />
         </div>
-    </form>
+    </div>
+
+
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            <div>
+                <input type="file" name="SelectedFile" />
+            </div>
+            <div class="py-3">
+                <button type="submit" class="btn btn-primary">OK</button>
+            </div>
+        </form>
+    </div>
 </div>

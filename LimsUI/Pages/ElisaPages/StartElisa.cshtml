@@ -5,6 +5,16 @@
 
 }
 
+<div class="container">
+    <div class="row justify-content-between pb-3">
+        <div class="col">
+            <h4 class="pb-3">Välj prover för ELISA</h4>
+        </div>
+        <div class="col-auto">
+            <img src="../img/ElisaPlate.jpg" height="100" />
+        </div>
+    </div>
+
 
 @if (Model.ElisaId == null)
 {
@@ -30,7 +40,7 @@
         </thead>
         <form class="form-group" method="post">
             <div class="d-flex justify-content-center pb-3">
-                <input type="submit" value="Starta ELISA" class="btn btn-primary" />
+                <input type="submit" value="Starta ELISA med valda prover" class="btn btn-primary" />
             </div>
         <tbody>
                 @foreach (var sample in Model.Samples)
@@ -70,6 +80,8 @@ else
         <a href="./ViewLayout/?ElisaId=@Model.ElisaId">Visa platt-layout</a>
     </div>
 }
+
+</div>
 
 
 
