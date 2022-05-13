@@ -4,7 +4,7 @@
 
 @model LimsUI.Pages.ElisaPages.ResultReviewModel
 @{
-    NumberFormatInfo PointDecimalSeparator = new NumberFormatInfo{ NumberDecimalSeparator = "." };
+    NumberFormatInfo PointDecimalSeparator = new NumberFormatInfo { NumberDecimalSeparator = "." };
 }
 
 
@@ -24,6 +24,7 @@
 {
     <div id="standardCurve" style="height: 350px; width: 800px"></div>
 
+
     <div class="pt-5">
         <form class="form-group" method="post">
             <table class="table table-sm border-bottom">
@@ -41,16 +42,8 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Result.Tests[0].concentration)
                         </th>
-@*                        <th>
-                            @Html.DisplayNameFor(model => model.Result.Tests[0].status)
-                        </th>*@
-                        @*<th>
-                            Godkänn
-                            </th>*@
                     </tr>
                 </thead>
-                @*     <form class="form-group" method="post">*@
-
                 <tbody>
                     @for (int i = 0; i < Model.Result.Tests.Count; i++)
                     {
@@ -73,17 +66,11 @@
                                 <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].concentration"
                                value="@Math.Round(Model.Result.Tests[i].concentration, 1)" readonly>
                             </td>
-@*                            <td>
-                                <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].status"
-                               value="@Model.Result.Tests[i].status" readonly>
-                            </td>*@
-                            @*                    <td>
-                                <input asp-for="@Model.Result.Tests[i].approved">
-                                </td>*@
                         </tr>
                     }
                 </tbody>
             </table>
+
             <div class="d-flex justify-content-center pt-3">
                 <input asp-for="ReviewedResult.Id" value="@Model.Result.Id" hidden>
                 <input asp-for="ResultReviewed" checked hidden>
@@ -103,42 +90,41 @@
     </div>
 
 
-<script src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-    google.charts.load('current', { packages: ['corechart'], 'language': 'sv'});
-    google.charts.setOnLoadCallback(drawChart);
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { packages: ['corechart'], 'language': 'sv'});
+        google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-                ['Koncentration','Mätvärde'],
-         @foreach (var data in Model.StandardDatas)
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                    ['Koncentration','Mätvärde'],
+        @foreach (var data in Model.StandardDatas)
         {
             //Gör om decimaltal till string och specar decimaltecken till punkt, om
-            //man skickar double som den är gör Chrome om decimaltecknet till ett komma vilket 
+            //man skickar double som den är gör Chrome om decimaltecknet till ett komma vilket
             //inte Google charts förstår.
             string conc = data.Concentration.ToString(PointDecimalSeparator);
             string measureValue = data.MeasureValue.ToString(PointDecimalSeparator);
             <text>[@conc, @measureValue],</text>
         }
-        ]);
+            ]);
 
-        var options = {
-            title: 'Standardkurva',
-            chartArea: { width: '50%' },
-            trendlines: {
-                0: {
-                    type: 'linear',
-                    showR2: true,
-                    visibleInLegend: true
-                }
-            },
-            hAxis: { title: 'Koncentration (ug/ml)' },
-            vAxis: { title: 'Mätvärde (A405)' }
-        };
+            var options = {
+                title: 'Standardkurva',
+                chartArea: { width: '50%' },
+                trendlines: {
+                    0: {
+                        type: 'linear',
+                        showR2: true,
+                        visibleInLegend: true
+                    }
+                },
+                hAxis: { title: 'Koncentration (ug/ml)' },
+                vAxis: { title: 'Mätvärde (A405)' }
+            };
 
-        var chartLinear = new google.visualization.ScatterChart(document.getElementById('standardCurve'));
-        chartLinear.draw(data, options);
-    }
-</script>
-
+            var chartLinear = new google.visualization.ScatterChart(document.getElementById('standardCurve'));
+            chartLinear.draw(data, options);
+        }
+    </script>
 }
