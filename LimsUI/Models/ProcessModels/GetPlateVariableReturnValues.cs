@@ -10,11 +10,11 @@ namespace LimsUI.Models.ProcessModels
     public class GetPlateVariableReturnValues
     {
         public string type { get; set; }
-        public Value value { get; set; }
+        public PlateValue value { get; set; }
         public Valueinfo valueInfo { get; set; }
     }
 
-    public class Value
+    public class PlateValue
     {
         public int elisaId { get; set; }
         public Well[] wells { get; set; }

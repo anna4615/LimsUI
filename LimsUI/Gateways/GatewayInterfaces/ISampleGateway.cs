@@ -9,5 +9,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
         Task<List<Sample>> GetSamples();
 
         Task<Elisa> GetResultForElisa(int elisaId);
+
+        Task<List<int>> GetElisaIdsForStatus(string status);
     }
 }

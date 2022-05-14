@@ -39,7 +39,7 @@ else
                     <tr class="border-bottom">
                         <td>@test.Sample.Id</td>
                         <td>@test.Sample.Name</td>
-                        @if (test.status.ToLower() == "approved")
+                        @if (test.Status.ToLower() == "approved")
                         {
                             <td>@Math.Round((float)test.Sample.Concentration, 1)</td>
                         }

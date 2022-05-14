@@ -4,25 +4,25 @@ namespace LimsUI.Models.UIModels
 {
     public class Test
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "ProvId")]
-        public int sampleId { get; set; }
+        public int SampleId { get; set; }
 
-        public int elisaId { get; set; }
+        public int ElisaId { get; set; }
         
         [Display(Name = "Namn")]
-        public string sampleName { get; set; }
+        public string SampleName { get; set; }
 
         [Display(Name = "Mätvärde")]
-        public float measureValue { get; set; }
+        public float MeasureValue { get; set; }
 
         [Display(Name = "Koncentration (ug/ml)")]
-        public float concentration { get; set; }
-        public int platePosition { get; set; }
+        public float Concentration { get; set; }
+        public int PlatePosition { get; set; }
 
         [Display(Name = "Status")]
-        public string status { get; set; }
+        public string Status { get; set; }
 
         public Sample Sample { get; set; }
 

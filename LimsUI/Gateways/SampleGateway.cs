@@ -72,5 +72,31 @@ namespace LimsUI.Gateways
 
             return results.FirstOrDefault();
         }
+
+        public async Task<List<int>> GetElisaIdsForStatus(string status)
+        {
+
+            GraphQLRequest query = new GraphQLRequest
+            {
+                Query = $@"query {{
+                            elisas(where:{{ status: {{ eq: ""{status}""}}}}){{
+                                id
+                            }}
+                        }}"
+            };
+
+            GraphQLResponse<ElisaList> response = await _client.SendQueryAsync<ElisaList>(query);
+            List<Elisa> elisas = response.Data.Elisas;
+
+
+            List<int> elisaIds = new List<int>();
+
+            foreach (var elisa in elisas)
+            {
+                elisaIds.Add(elisa.Id);
+            }
+
+            return elisaIds;
+        }
     }
 }

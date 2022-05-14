@@ -16,7 +16,7 @@ namespace LimsUI.Utilities
         }
 
 
-        public static Elisa GetElisaFromCookie(this ISession session, string key)
+        public static Elisa GetElisaFromSendRawDataReturnValues(this ISession session, string key)
         {
             string sessionValue = session.GetString(key);
 
@@ -31,7 +31,7 @@ namespace LimsUI.Utilities
                 return null;
         }
 
-        public static List<StandardData> GetStandardDataFromCookie(this ISession session, string key)
+        public static List<StandardData> GetStandardDataFromSendRawDataReturnValues(this ISession session, string key)
         {
             string sessionValue = session.GetString(key);
 
@@ -45,5 +45,19 @@ namespace LimsUI.Utilities
             else
                 return null;
         }
+
+        public static void SetElisaIds(this ISession session, string key, List<int> elisaIds)
+        {
+            session.SetString(key, JsonSerializer.Serialize(elisaIds));
+        }
+
+        public static List<int> GetElisaIds(this ISession session, string key)
+        {
+            string sessionValue = session.GetString(key);
+            List<int> elisaIds = JsonSerializer.Deserialize<List<int>>(sessionValue);
+
+            return elisaIds;
+        }
+
     }
 }

@@ -18,10 +18,12 @@ namespace LimsUI.Pages.ElisaPages
     public class ReviewResultModel : PageModel
     {
         private readonly IProcessGateway _processGateway;
+        private readonly ISampleGateway _sampleGateway;
 
-        public ReviewResultModel(IProcessGateway processGateway)
+        public ReviewResultModel(IProcessGateway processGateway, ISampleGateway sampleGateway)
         {
             _processGateway = processGateway;
+            _sampleGateway = sampleGateway;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -32,16 +34,28 @@ namespace LimsUI.Pages.ElisaPages
         [BindProperty]
         public Elisa ReviewedResult { get; set; }
 
-        //[BindProperty]
-        //public bool ResultReviewed { get; set; }
-
         public List<StandardData> StandardDatas { get; set; }
 
+        public List<Elisa> Elisas { get; set; }
 
-        public void OnGet()
+        public List<int> ElisaIds { get; set; }
+
+
+        public async Task<IActionResult> OnGet()
         {
-            Elisa = HttpContext.Session.GetElisaFromCookie("SendRawDataReturnValues");
-            StandardDatas = HttpContext.Session.GetStandardDataFromCookie("SendRawDataReturnValues");
+            Elisa = HttpContext.Session.GetElisaFromSendRawDataReturnValues("SendRawDataReturnValues");
+            StandardDatas = HttpContext.Session.GetStandardDataFromSendRawDataReturnValues("SendRawDataReturnValues");
+
+            if (Elisa == null)
+            {
+                ElisaIds = await _sampleGateway.GetElisaIdsForStatus("In Review");
+                HttpContext.Session.SetElisaIds("Elisas", ElisaIds);
+                Elisa = await _processGateway.GetResultForElisaId(84);
+            }
+
+
+
+            return Page();
         }
 
 

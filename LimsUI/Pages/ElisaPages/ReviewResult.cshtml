@@ -32,40 +32,41 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].sampleId)
+                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].SampleId)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].sampleName)
+                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].SampleName)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].measureValue)
+                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].MeasureValue)
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].concentration)
+                                @Html.DisplayNameFor(model => model.Elisa.Tests[0].Concentration)
                             </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @*Den här listan behöver inte vara input (tror jag)*@
                         @for (int i = 0; i < Model.Elisa.Tests.Count; i++)
                         {
-                            <input asp-for="@Model.ReviewedResult.Tests[i].elisaId" value="@Model.Elisa.Tests[i].elisaId" hidden>
-                            <input asp-for="@Model.ReviewedResult.Tests[i].id" value="@Model.Elisa.Tests[i].id" hidden>
+                            <input asp-for="@Model.ReviewedResult.Tests[i].ElisaId" value="@Model.Elisa.Tests[i].ElisaId" hidden>
+                            <input asp-for="@Model.ReviewedResult.Tests[i].Id" value="@Model.Elisa.Tests[i].Id" hidden>
                             <tr class="border-bottom">
                                 <td>
-                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleId"
-                                   value="@Model.Elisa.Tests[i].sampleId" readonly>
+                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].SampleId"
+                                   value="@Model.Elisa.Tests[i].SampleId" readonly>
                                 </td>
                                 <td>
-                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].sampleName"
-                                   value="@Model.Elisa.Tests[i].sampleName" readonly>
+                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].SampleName"
+                                   value="@Model.Elisa.Tests[i].SampleName" readonly>
                                 </td>
                                 <td>
-                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].measureValue"
-                                   value="@Model.Elisa.Tests[i].measureValue" readonly>
+                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].MeasureValue"
+                                   value="@Model.Elisa.Tests[i].MeasureValue" readonly>
                                 </td>
                                 <td>
-                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].concentration"
-                                   value="@Math.Round(Model.Elisa.Tests[i].concentration, 1)" readonly>
+                                    <input class="without-border" asp-for="@Model.ReviewedResult.Tests[i].Concentration"
+                                   value="@Math.Round(Model.Elisa.Tests[i].Concentration, 1)" readonly>
                                 </td>
                             </tr>
                         }

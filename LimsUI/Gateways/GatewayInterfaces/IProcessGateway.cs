@@ -11,6 +11,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
         Task<Layout> GetLayoutForElisaId(int elisaId);
         Task<SendRawDataReturnValues> SendRawData(SendRawDataBody body);
         Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body);
+        Task<Elisa> GetResultForElisaId(int elisaId);
 
     }
 }

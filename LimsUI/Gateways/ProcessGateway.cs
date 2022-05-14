@@ -39,7 +39,8 @@ namespace LimsUI.Gateways
             
             string instanceId = await GetProcessInstanceId(elisaId);
 
-            GetPlateVariableReturnValues plateVariable = await GetPlateVariable(instanceId);
+            string variable = await GetVariable(instanceId, "plate");
+            GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(variable);
 
             //Skapar layout från properties i plateVariable
             //Well i plateVariable konverteras till Well som används i klassen Layout
@@ -66,6 +67,24 @@ namespace LimsUI.Gateways
         }
 
 
+        public async Task<Elisa> GetResultForElisaId(int elisaId)
+        {
+            string instanceId = await GetProcessInstanceId(elisaId);
+            string variable = await GetVariable(instanceId, "elisa");
+            GetElisaVariableReturnValues elisaVariable = JsonSerializer.Deserialize<GetElisaVariableReturnValues>(variable);
+
+            Elisa elisa = new Elisa
+            {
+                Id = elisaVariable.value.id,
+                Status = elisaVariable.value.status,
+                Tests = ConvertVariableTestsToElisaTests(elisaVariable.value.tests)
+
+            };
+
+            return elisa;
+        }
+
+
         private async Task<string> GetProcessInstanceId(int elisaId)
         {
             //Hämta rätt process mhja BusinessKey, BusinessKey = ElisaId
@@ -77,15 +96,25 @@ namespace LimsUI.Gateways
             return processInstance.id;
         }
 
-        private async Task<GetPlateVariableReturnValues> GetPlateVariable(string instanceId)
+        //private async Task<GetPlateVariableReturnValues> GetPlateVariable(string instanceId)
+        //{
+        //    HttpResponseMessage response = await _client.GetAsync(
+        //        _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/plate");
+
+        //    string responseString = await response.Content.ReadAsStringAsync();
+        //    GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(responseString);
+
+        //    return plateVariable;
+        //}
+
+        private async Task<string> GetVariable(string instanceId, string variableName)
         {
             HttpResponseMessage response = await _client.GetAsync(
-                _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/plate");
+                _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/" + variableName);
 
             string responseString = await response.Content.ReadAsStringAsync();
-            GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(responseString);
 
-            return plateVariable;
+            return responseString;
         }
 
 
@@ -105,6 +134,30 @@ namespace LimsUI.Gateways
 
             return wellsList.OrderBy(w => w.Position).ToList();
         }
+
+
+        private static List<Models.UIModels.Test> ConvertVariableTestsToElisaTests(Models.ProcessModels.Test[] tests)
+        {
+            List<Models.UIModels.Test> testsList = new List<Models.UIModels.Test>();
+
+            for (int i = 0; i < tests.Length; i++)
+            {
+                testsList.Add(new Models.UIModels.Test
+                {
+                    Id = tests[i].id,
+                    SampleId = tests[i].sampleId,
+                    ElisaId = tests[i].elisaId,
+                    SampleName = tests[i].sampleName,
+                    MeasureValue = tests[i].measureValue,
+                    Concentration = tests[i].concentration,
+                    PlatePosition = tests[i].platePosition,
+                    Status = tests[i].status
+                });
+            }
+
+            return testsList;
+        }
+
 
         public async Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body)
         {
