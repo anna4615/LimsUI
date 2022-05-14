@@ -43,10 +43,10 @@ namespace LimsUI.Pages.ElisaPages
         public async Task<IActionResult> OnPost()
         {
 
-            //ReadSelectedFileToResultLines();
-            //SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
-            //SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
-            SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
+            ReadSelectedFileToResultLines();
+            SendRawDataBody sendRawDataBody = MakeSendRawDataBody();
+            SendRawDataReturnValues sendRawDataReturnValues = await _processGateway.SendRawData(sendRawDataBody);
+            //SendRawDataReturnValues sendRawDataReturnValues = TestData.MakeSendRawDataReturnValuesExample();
 
             HttpContext.Session.SetSendRawDataReturnValues("SendRawDataReturnValues", sendRawDataReturnValues);
 
