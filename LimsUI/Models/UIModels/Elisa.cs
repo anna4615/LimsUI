@@ -6,7 +6,6 @@ namespace LimsUI.Models.UIModels
 {
     public class Elisa
     {
-        [JsonPropertyName("id")]
         
         public int Id { get; set; }
 
@@ -14,7 +13,6 @@ namespace LimsUI.Models.UIModels
 
         public DateTime DateAdded { get; set; }
 
-        [JsonPropertyName("tests")]
         public List<Test> Tests { get; set; }
 
         public bool Approved { get; set; }

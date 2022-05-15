@@ -20,6 +20,15 @@
         </div>
     </div>
 
+    @if (Model.ElisaIds != null && Model.ElisaIds.Count() != 0)
+    {
+        foreach (var id in Model.ElisaIds)
+        {
+            <a href="/ElisaPages/ReviewResult/?elisaId=@id">Elisa id: @id</a>
+            <br />
+        }
+    }
+
 
     @if (Model.Elisa != null && Model.ElisaId == Model.Elisa.Id)
     {

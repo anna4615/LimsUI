@@ -15,11 +15,13 @@ namespace LimsUI.Gateways
     {
         private readonly IConfiguration _configuration;
         private readonly HttpClient _client;
+        private readonly JsonSerializerOptions _caseInsensitive;
 
         public ProcessGateway(IConfiguration configuration, HttpClient client)
         {
             _configuration = configuration;
             _client = client;
+            _caseInsensitive = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         }
 
 
@@ -36,19 +38,15 @@ namespace LimsUI.Gateways
         //plate innehåller en lista av Well som används för att skapa lista av Well i Layout 
         public async Task<Layout> GetLayoutForElisaId(int elisaId)
         {
-            
+        
             string instanceId = await GetProcessInstanceId(elisaId);
-
             string variable = await GetVariable(instanceId, "plate");
             GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(variable);
 
-            //Skapar layout från properties i plateVariable
-            //Well i plateVariable konverteras till Well som används i klassen Layout
-            Layout layout = new Layout
-            {
-                ElisaId = plateVariable.value.elisaId,
-                Wells = ConvertVariableWellsToLayoutWells(plateVariable.value.wells)
-            };
+            //plateVariable.value är ett objekt som inte direkt kan göras till en UIModels.Layout.
+            //Serializerar value till sträng som sedan deserialiseras till UIModels.Layout.
+            string plateVariableString = JsonSerializer.Serialize(plateVariable.value);
+            Layout layout = JsonSerializer.Deserialize<Layout>(plateVariableString, _caseInsensitive);
 
             return layout;
         }
@@ -71,18 +69,42 @@ namespace LimsUI.Gateways
         {
             string instanceId = await GetProcessInstanceId(elisaId);
             string variable = await GetVariable(instanceId, "elisa");
-            GetElisaVariableReturnValues elisaVariable = JsonSerializer.Deserialize<GetElisaVariableReturnValues>(variable);
+            GetElisaVariableReturnValues elisaVariable = JsonSerializer.Deserialize<GetElisaVariableReturnValues>(variable, _caseInsensitive);
 
-            Elisa elisa = new Elisa
-            {
-                Id = elisaVariable.value.id,
-                Status = elisaVariable.value.status,
-                Tests = ConvertVariableTestsToElisaTests(elisaVariable.value.tests)
-
-            };
+            //elisaVariable.value är ett objekt som inte direkt kan göras till en UIModels.Elisa.
+            //Serializerar value till sträng som sedan deserialiseras till UIModels.Elisa.
+            string elisaVariableString = JsonSerializer.Serialize(elisaVariable.value);
+            Elisa elisa = JsonSerializer.Deserialize<Elisa>(elisaVariableString, _caseInsensitive);
 
             return elisa;
         }
+
+        public async Task<List<StandardData>> GetStandardDatasForElisaId(int elisaId)
+        {
+            string instanceId = await GetProcessInstanceId(elisaId);
+            string variable = await GetVariable(instanceId, "standardsData");
+            var stdsVariable = JsonSerializer.Deserialize<Models.ProcessModels.Variables.Standardsdata>(variable, _caseInsensitive);
+
+            //stdsVariable.value är en sträng som kan deserialiseras direkt till List<UIModels.StandardData>
+            List<StandardData> standardDatas = JsonSerializer.Deserialize<List<StandardData>>(stdsVariable.value, _caseInsensitive);
+
+            return standardDatas;
+        }
+
+        public async Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body)
+        {
+            HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendMessage"], body);
+            //SendRawDataReturnValues returnValue = await respons.Content.ReadFromJsonAsync<SendRawDataReturnValues>();
+            string responseString = await respons.Content.ReadAsStringAsync();
+            string trimmedResponse = responseString.Trim('[').Trim(']');
+
+            ResultReviewedReturnValues returnValue = JsonSerializer.Deserialize<ResultReviewedReturnValues>(trimmedResponse);
+
+            return returnValue;
+        }
+
+
+
 
 
         private async Task<string> GetProcessInstanceId(int elisaId)
@@ -96,16 +118,7 @@ namespace LimsUI.Gateways
             return processInstance.id;
         }
 
-        //private async Task<GetPlateVariableReturnValues> GetPlateVariable(string instanceId)
-        //{
-        //    HttpResponseMessage response = await _client.GetAsync(
-        //        _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/plate");
 
-        //    string responseString = await response.Content.ReadAsStringAsync();
-        //    GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(responseString);
-
-        //    return plateVariable;
-        //}
 
         private async Task<string> GetVariable(string instanceId, string variableName)
         {
@@ -118,57 +131,6 @@ namespace LimsUI.Gateways
         }
 
 
-        private static List<Models.UIModels.Well> ConvertVariableWellsToLayoutWells(Models.ProcessModels.Well[] wells)
-        {
-            List<Models.UIModels.Well> wellsList = new List<Models.UIModels.Well>();
 
-            for (int i = 0; i < wells.Length; i++)
-            {
-                wellsList.Add(new Models.UIModels.Well
-                {
-                    Position = wells[i].pos,
-                    WellName = wells[i].wellName,
-                    Reagent = wells[i].reagent,
-                });
-            }
-
-            return wellsList.OrderBy(w => w.Position).ToList();
-        }
-
-
-        private static List<Models.UIModels.Test> ConvertVariableTestsToElisaTests(Models.ProcessModels.Test[] tests)
-        {
-            List<Models.UIModels.Test> testsList = new List<Models.UIModels.Test>();
-
-            for (int i = 0; i < tests.Length; i++)
-            {
-                testsList.Add(new Models.UIModels.Test
-                {
-                    Id = tests[i].id,
-                    SampleId = tests[i].sampleId,
-                    ElisaId = tests[i].elisaId,
-                    SampleName = tests[i].sampleName,
-                    MeasureValue = tests[i].measureValue,
-                    Concentration = tests[i].concentration,
-                    PlatePosition = tests[i].platePosition,
-                    Status = tests[i].status
-                });
-            }
-
-            return testsList;
-        }
-
-
-        public async Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body)
-        {
-            HttpResponseMessage respons = await _client.PostAsJsonAsync(_configuration["SendMessage"], body);
-            //SendRawDataReturnValues returnValue = await respons.Content.ReadFromJsonAsync<SendRawDataReturnValues>();
-            string responseString = await respons.Content.ReadAsStringAsync();
-            string trimmedResponse = responseString.Trim('[').Trim(']');
-
-            ResultReviewedReturnValues returnValue = JsonSerializer.Deserialize<ResultReviewedReturnValues>(trimmedResponse);
-
-            return returnValue;
-        }
     }
 }

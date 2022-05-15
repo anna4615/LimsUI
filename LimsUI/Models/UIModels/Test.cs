@@ -1,16 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LimsUI.Models.UIModels
 {
     public class Test
     {
+
         public int Id { get; set; }
 
         [Display(Name = "ProvId")]
         public int SampleId { get; set; }
 
         public int ElisaId { get; set; }
-        
+
         [Display(Name = "Namn")]
         public string SampleName { get; set; }
 
@@ -19,6 +21,7 @@ namespace LimsUI.Models.UIModels
 
         [Display(Name = "Koncentration (ug/ml)")]
         public float Concentration { get; set; }
+
         public int PlatePosition { get; set; }
 
         [Display(Name = "Status")]

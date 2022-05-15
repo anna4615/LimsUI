@@ -8,7 +8,6 @@ namespace LimsUI.Utilities
 {
     public static class SessionMethods
     {
-
         public static void SetSendRawDataReturnValues(this ISession session, string key,
                                                         SendRawDataReturnValues returnValues)
         {
@@ -22,8 +21,8 @@ namespace LimsUI.Utilities
 
             if (sessionValue != null)
             {
-                SendRawDataReturnValues returnValues = JsonSerializer.Deserialize<SendRawDataReturnValues>(sessionValue);
-                Elisa elisa= JsonSerializer.Deserialize<Elisa>(returnValues.variables.elisa.value);
+                SendRawDataReturnValues returnValues = JsonSerializer.Deserialize<SendRawDataReturnValues>(sessionValue, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                Elisa elisa= JsonSerializer.Deserialize<Elisa>(returnValues.variables.elisa.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 return elisa;
             }
 
@@ -37,8 +36,8 @@ namespace LimsUI.Utilities
 
             if (sessionValue != null)
             {
-                SendRawDataReturnValues returnValues = JsonSerializer.Deserialize<SendRawDataReturnValues>(sessionValue);
-                List<StandardData> standardDatas = JsonSerializer.Deserialize<List<StandardData>>(returnValues.variables.standardsData.value);
+                SendRawDataReturnValues returnValues = JsonSerializer.Deserialize<SendRawDataReturnValues>(sessionValue, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                List<StandardData> standardDatas = JsonSerializer.Deserialize<List<StandardData>>(returnValues.variables.standardsData.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 return standardDatas;
             }
 
@@ -54,7 +53,7 @@ namespace LimsUI.Utilities
         public static List<int> GetElisaIds(this ISession session, string key)
         {
             string sessionValue = session.GetString(key);
-            List<int> elisaIds = JsonSerializer.Deserialize<List<int>>(sessionValue);
+            List<int> elisaIds = JsonSerializer.Deserialize<List<int>>(sessionValue, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return elisaIds;
         }
