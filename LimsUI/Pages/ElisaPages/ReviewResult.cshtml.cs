@@ -35,8 +35,7 @@ namespace LimsUI.Pages.ElisaPages
         public Elisa ReviewedResult { get; set; }
 
         public List<StandardData> StandardDatas { get; set; }
-
-        [BindProperty]
+      
         public List<Elisa> Elisas { get; set; }
 
         public List<int> ElisaIds { get; set; }
@@ -51,6 +50,7 @@ namespace LimsUI.Pages.ElisaPages
             {
                 ElisaIds = await _sampleGateway.GetElisaIdsForStatus("In Review");
                 HttpContext.Session.SetElisaIds("Elisas", ElisaIds);
+                HttpContext.Session.Remove("SendRawDataReturnValues");
                 return Page();
             }
 
@@ -70,9 +70,11 @@ namespace LimsUI.Pages.ElisaPages
             ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
             ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
 
+            HttpContext.Session.Remove("SendRawDataReturnValues");
+
             int elisaId = resultReviewedReturnValues.variables.elisaId.value;
 
-            return Redirect($"/ElisaResult/?elisaId={elisaId}");
+            return Redirect($"../ElisaResult/?elisaId={elisaId}");
 
         }
 

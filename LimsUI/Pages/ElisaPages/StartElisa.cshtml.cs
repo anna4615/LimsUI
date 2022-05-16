@@ -64,7 +64,7 @@ namespace LimsUI.Pages.ElisaPages
 
                 ElisaId = response.variables.elisaId.value;
 
-                Layout = JsonSerializer.Deserialize<Layout>(response.variables.plate.value.ToString());
+                Layout = JsonSerializer.Deserialize<Layout>(response.variables.plate.value.ToString(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             }
 

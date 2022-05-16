@@ -51,7 +51,7 @@ namespace LimsUI.Pages.ElisaPages
             HttpContext.Session.SetSendRawDataReturnValues("SendRawDataReturnValues", sendRawDataReturnValues);
 
 
-            Elisa = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value);
+            Elisa = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
            
             return Redirect($"./ReviewResult/?ElisaId={Elisa.Id}");
         }

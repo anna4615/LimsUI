@@ -41,7 +41,7 @@ namespace LimsUI.Gateways
         
             string instanceId = await GetProcessInstanceId(elisaId);
             string variable = await GetVariable(instanceId, "plate");
-            GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(variable);
+            GetPlateVariableReturnValues plateVariable = JsonSerializer.Deserialize<GetPlateVariableReturnValues>(variable, _caseInsensitive);
 
             //plateVariable.value är ett objekt som inte direkt kan göras till en UIModels.Layout.
             //Serializerar value till sträng som sedan deserialiseras till UIModels.Layout.
@@ -59,7 +59,7 @@ namespace LimsUI.Gateways
             string responseString = await respons.Content.ReadAsStringAsync();
             string trimmedResponse = responseString.Trim('[').Trim(']');
 
-            SendRawDataReturnValues returnValue = JsonSerializer.Deserialize<SendRawDataReturnValues>(trimmedResponse);
+            SendRawDataReturnValues returnValue = JsonSerializer.Deserialize<SendRawDataReturnValues>(trimmedResponse, _caseInsensitive);
 
             return returnValue;
         }
@@ -98,7 +98,7 @@ namespace LimsUI.Gateways
             string responseString = await respons.Content.ReadAsStringAsync();
             string trimmedResponse = responseString.Trim('[').Trim(']');
 
-            ResultReviewedReturnValues returnValue = JsonSerializer.Deserialize<ResultReviewedReturnValues>(trimmedResponse);
+            ResultReviewedReturnValues returnValue = JsonSerializer.Deserialize<ResultReviewedReturnValues>(trimmedResponse, _caseInsensitive);
 
             return returnValue;
         }
@@ -114,7 +114,7 @@ namespace LimsUI.Gateways
             string responseString = await respons.Content.ReadAsStringAsync();
             string trimmedResponse = responseString.Trim('[').Trim(']');
 
-            ProcessInstance processInstance = JsonSerializer.Deserialize<ProcessInstance>(trimmedResponse);
+            ProcessInstance processInstance = JsonSerializer.Deserialize<ProcessInstance>(trimmedResponse, _caseInsensitive);
             return processInstance.id;
         }
 
