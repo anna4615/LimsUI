@@ -26,7 +26,7 @@ namespace LimsUI.Pages.ElisaPages
             _sampleGateway = sampleGateway;
         }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public int ElisaId { get; set; }
 
         public Elisa Elisa { get; set; }
@@ -35,7 +35,7 @@ namespace LimsUI.Pages.ElisaPages
         public Elisa ReviewedResult { get; set; }
 
         public List<StandardData> StandardDatas { get; set; }
-      
+
         public List<Elisa> Elisas { get; set; }
 
         public List<int> ElisaIds { get; set; }
@@ -50,16 +50,10 @@ namespace LimsUI.Pages.ElisaPages
             {
                 ElisaIds = await _sampleGateway.GetElisaIdsForStatus("In Review");
                 HttpContext.Session.SetElisaIds("Elisas", ElisaIds);
-                HttpContext.Session.Remove("SendRawDataReturnValues");
                 return Page();
             }
 
-            if (Elisa == null && ElisaId != 0)
-            {
-                Elisa = await _processGateway.GetResultForElisaId(ElisaId);
-                StandardDatas = await _processGateway.GetStandardDatasForElisaId(ElisaId);
-            }
-
+            HttpContext.Session.Remove("SendRawDataReturnValues");
 
             return Page();
         }
@@ -67,6 +61,13 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
+            if (ReviewedResult.Id == 0)
+            {
+                Elisa = await _processGateway.GetResultForElisaId(ElisaId);
+                StandardDatas = await _processGateway.GetStandardDatasForElisaId(ElisaId);
+                return Page();
+            }
+
             ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
             ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
 
@@ -74,7 +75,7 @@ namespace LimsUI.Pages.ElisaPages
 
             int elisaId = resultReviewedReturnValues.variables.elisaId.value;
 
-            return Redirect($"../ElisaResult/?elisaId={elisaId}");
+            return Redirect($"./ElisaResult/?elisaId={elisaId}");
 
         }
 

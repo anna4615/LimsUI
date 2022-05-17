@@ -53,7 +53,7 @@ namespace LimsUI.Pages.ElisaPages
 
             Elisa = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
            
-            return Redirect($"./ReviewResult/?ElisaId={Elisa.Id}");
+            return Redirect($"./ReviewResult/");
         }
 
 

@@ -20,17 +20,24 @@
         </div>
     </div>
 
-    @if (Model.ElisaIds != null && Model.ElisaIds.Count() != 0)
-    {
-        foreach (var id in Model.ElisaIds)
+    <form class="form-group" method="post">
+        @if (Model.ElisaIds != null && Model.ElisaIds.Count() != 0)
         {
-            <a href="/ElisaPages/ReviewResult/?elisaId=@id">Elisa id: @id</a>
-            <br />
+            foreach (var id in Model.ElisaIds)
+            {
+                <div class="form-check">
+                    <input asp-for="ElisaId" class="form-check-input" type="radio" value="@id">
+                    <label class="form-check-label" for="@id">
+                        Elisa id: @id
+                    </label>
+                </div>
+            }
+            <button type="submit" class="btn btn-primary">Visa resultat för granskning</button>
         }
-    }
+    </form>
 
 
-    @if (Model.Elisa != null && Model.ElisaId == Model.Elisa.Id)
+    @if (Model.Elisa != null)
     {
         <p>ELISA id: @Model.Elisa.Id</p>
         <div id="standardCurve" style="height: 350px; width: 800px"></div>
@@ -101,7 +108,7 @@
         </div>
 
 
-        <script src="https://www.gstatic.com/charts/loader.js"></script>
+        @*<script src="https://www.gstatic.com/charts/loader.js"></script>*@
         <script>
             google.charts.load('current', { packages: ['corechart'], 'language': 'sv' });
             google.charts.setOnLoadCallback(drawChart);
@@ -118,7 +125,7 @@
                 string measureValue = data.MeasureValue.ToString(PointDecimalSeparator);
                 <text>[@conc, @measureValue], </text>
             }
-                        ]);
+                                                            ]);
 
                 var options = {
                     title: 'Standardkurva',
@@ -131,7 +138,8 @@
                         }
                     },
                     hAxis: { title: 'Koncentration (ug/ml)' },
-                    vAxis: { title: 'Mätvärde (A405)' }
+                    vAxis: { title: 'Mätvärde (A405)' },
+                    async: true
                 };
 
                 var chartLinear = new google.visualization.ScatterChart(document.getElementById('standardCurve'));
