@@ -4,9 +4,18 @@
 }
 
 
+<div class="container">
+    <div class="row justify-content-between pb-3">
+        <div class="col">
+            <h4 class="pb-3">Layout för ELISA</h4>
+        </div>
+        <div class="col-auto">
+            <img src="/img/ElisaPlate.jpg" height="100" />
+        </div>
+    </div>
+
 
 <div id="layout" class="container px-5">
-    <h4>Layout för ELISA</h4>
     <p>ELISA id: @Model.Layout.ElisaId</p>
     <table style="table-layout: fixed ; width: 75%; text-align: center" class="table table-sm border-bottom">
         <thead>
@@ -44,4 +53,6 @@
 </div>
 
 <input type="button" onclick="printDiv('layout')" value="Skriv ut" />
+
+</div>
 

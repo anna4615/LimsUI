@@ -42,6 +42,7 @@ namespace LimsUI.Pages.ElisaPages
         public async Task<IActionResult> OnGet()
         {
             Samples = await _sampleGateway.GetSamples();
+            Samples = Samples.Where(s => s.Concentration == null).ToList();
             //TODO: Spara Samples i cookie
 
             return Page();
