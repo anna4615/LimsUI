@@ -103,14 +103,20 @@ namespace LimsUI.Gateways
             return returnValue;
         }
 
+        public async Task<List<ProcessInstance>> GetProcesses()
+        {
+            HttpResponseMessage response = await _client.GetAsync(_configuration["GetProcessInstance"]);
+            string responseString = await response.Content.ReadAsStringAsync();
+            List<ProcessInstance> processList = JsonSerializer.Deserialize<List<ProcessInstance>>(responseString);
 
-
+            return processList;
+        }
 
 
         private async Task<string> GetProcessInstanceId(int elisaId)
         {
             //Hämta rätt process mhja BusinessKey, BusinessKey = ElisaId
-            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstanceFromBusinessKey"] + elisaId);
+            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstance"] + $"?businessKey={elisaId}");
             string responseString = await respons.Content.ReadAsStringAsync();
             string trimmedResponse = responseString.Trim('[').Trim(']');
 
@@ -123,7 +129,7 @@ namespace LimsUI.Gateways
         private async Task<string> GetVariable(string instanceId, string variableName)
         {
             HttpResponseMessage response = await _client.GetAsync(
-                _configuration["GetProcessInstanceFromInstanceId"] + instanceId + "/variables/" + variableName);
+                _configuration["GetProcessInstance"] + instanceId + "/variables/" + variableName);
 
             string responseString = await response.Content.ReadAsStringAsync();
 

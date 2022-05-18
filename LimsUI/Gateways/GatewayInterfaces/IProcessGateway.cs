@@ -13,6 +13,7 @@ namespace LimsUI.Gateways.GatewayInterfaces
         Task<ResultReviewedReturnValues> SendResultReviewed(ResultReviewedBody body);
         Task<Elisa> GetResultForElisaId(int elisaId);
         Task<List<StandardData>> GetStandardDatasForElisaId(int elisaId);
+        Task<List<ProcessInstance>> GetProcesses();
 
     }
 }
