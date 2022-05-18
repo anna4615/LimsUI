@@ -2,6 +2,7 @@ using LimsUI.Gateways.GatewayInterfaces;
 using LimsUI.Models.ProcessModels;
 using LimsUI.Models.ProcessModels.Variables;
 using LimsUI.Models.UIModels;
+using LimsUI.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -43,7 +44,8 @@ namespace LimsUI.Pages.ElisaPages
         {
             Samples = await _sampleGateway.GetSamples();
             Samples = Samples.Where(s => s.Concentration == null).ToList();
-            //TODO: Spara Samples i cookie
+
+            HttpContext.Session.SetSamples("Samples", Samples);
 
             return Page();
         }
@@ -51,13 +53,17 @@ namespace LimsUI.Pages.ElisaPages
         public async Task<IActionResult> OnPost()
         {
             //TODO: Felhantering om inga prover är valda
-            //TODO: Hämta Samples från cookie
-            Samples = await _sampleGateway.GetSamples();
+
+            Samples = HttpContext.Session.GetSamples("Samples");
+
+            if (Samples == null)
+            {
+                Samples = await _sampleGateway.GetSamples();
+            }
+
 
             if (SelectedIds.Any())
             {
-                //Samples = await _sampleGateway.GetSamples();
-
                 MakeSelectedSamplesList();
                 StartElisaBody body = MakeStartElisaBody();
 

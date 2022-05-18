@@ -58,5 +58,18 @@ namespace LimsUI.Utilities
             return elisaIds;
         }
 
+        public static void SetSamples(this ISession session, string key, List<Sample> samples)
+        {
+            session.SetString(key, JsonSerializer.Serialize(samples));
+        }
+
+        public static List<Sample> GetSamples(this ISession session, string key)
+        {
+            string sessionValue = session.GetString(key);
+            List<Sample> samples = JsonSerializer.Deserialize<List<Sample>>(sessionValue, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return samples;
+        }
+
     }
 }

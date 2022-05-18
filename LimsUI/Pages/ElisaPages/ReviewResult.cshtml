@@ -21,18 +21,25 @@
     </div>
 
     <form class="form-group" method="post">
-        @if (Model.ElisaIds != null && Model.ElisaIds.Count() != 0)
+        @if (Model.ElisaIds != null)
         {
-            foreach (var id in Model.ElisaIds)
+            if (Model.ElisaIds.Count() != 0)
             {
-                <div class="form-check">
-                    <input asp-for="ElisaId" class="form-check-input" type="radio" value="@id">
-                    <label class="form-check-label" for="@id">
-                        Elisa id: @id
-                    </label>
-                </div>
+                foreach (var id in Model.ElisaIds)
+                {
+                    <div class="form-check">
+                        <input asp-for="ElisaId" class="form-check-input" type="radio" value="@id">
+                        <label class="form-check-label" for="@id">
+                            Elisa id: @id
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Visa resultat för granskning</button>
+                }
             }
-            <button type="submit" class="btn btn-primary">Visa resultat för granskning</button>
+            else
+            {
+                <h6>Det finns inga ELISA klara för granskning</h6>
+            }
         }
     </form>
 
@@ -125,7 +132,7 @@
                 string measureValue = data.MeasureValue.ToString(PointDecimalSeparator);
                 <text>[@conc, @measureValue], </text>
             }
-                                                            ]);
+                                                                                    ]);
 
                 var options = {
                     title: 'Standardkurva',

@@ -75,8 +75,12 @@ namespace LimsUI.Pages.ElisaPages
 
             int elisaId = resultReviewedReturnValues.variables.elisaId.value;
 
-            return Redirect($"./ElisaResult/?elisaId={elisaId}");
+            if (ReviewedResult.Redo)
+            {
+                return Redirect($"~/ElisaPages/ViewLayout/?ElisaId={elisaId}");
+            }
 
+            return Redirect($"~/ElisaPages/ElisaResult/?ElisaId={elisaId}");
         }
 
 
