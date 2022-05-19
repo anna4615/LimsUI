@@ -17,7 +17,7 @@
 
     @if (Model.ElisaResult == null)
     {
-        <p>Hittade ingen Elisa med id @Model.ElisaId.</p>
+        <p>Hittade ingen Elisa.</p>
     }
 
     else
@@ -25,7 +25,8 @@
         @if (Model.ElisaResult.Status.ToLower() == "approved")
         {
             <div>
-                <p>Elisa id: @Model.ElisaResult.Id</p>
+                <p class="mb-0">Elisa id: @Model.ElisaResult.Id</p>
+                <p>Status: @Model.ElisaResult.Status</p>
             </div>
             <table class="table table-sm border-bottom">
                 <thead>
@@ -45,11 +46,11 @@
                     @foreach (var test in Model.ElisaResult.Tests)
                     {
                         <tr class="border-bottom">
-                            <td>@test.Sample.Id</td>
-                            <td>@test.Sample.Name</td>
+                            <td>@test.SampleId</td>
+                            <td>@test.SampleName</td>
                             @if (test.Status.ToLower() == "approved")
                             {
-                                <td>@Math.Round((float)test.Sample.Concentration, 1)</td>
+                                <td>@Math.Round((float)test.Concentration, 1)</td>
                             }
                             else
                             {
@@ -65,7 +66,7 @@
         {
             if (Model.ElisaResult.Status.ToLower() == "failed")
             {
-                <p>Elisa med id @Model.ElisaResult.Id misslyckades.</p>
+                <p>Elisa med id @Model.ElisaResult.Id misslyckades, inga koncentrationer sparades.</p>
             }
             if (Model.ElisaResult.Status.ToLower() == "in progress")
             {

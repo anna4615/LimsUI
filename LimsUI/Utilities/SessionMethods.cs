@@ -71,5 +71,28 @@ namespace LimsUI.Utilities
             return samples;
         }
 
+
+        public static void SetResultReviewedReturnValues(this ISession session, string key,
+                                                ResultReviewedReturnValues returnValues)
+        {
+            session.SetString(key, JsonSerializer.Serialize(returnValues));
+        }
+
+
+        public static Elisa GetElisaResultReviewedReturnValues(this ISession session, string key)
+        {
+            string sessionValue = session.GetString(key);
+
+            if (sessionValue != null)
+            {
+                ResultReviewedReturnValues returnValues = JsonSerializer.Deserialize<ResultReviewedReturnValues>(sessionValue, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                Elisa elisa = JsonSerializer.Deserialize<Elisa>(returnValues.variables.elisa.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return elisa;
+            }
+
+            else
+                return null;
+        }
+
     }
 }

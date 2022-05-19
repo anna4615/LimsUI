@@ -55,20 +55,17 @@
 
             <input type="button" onclick="printDiv('layout')" value="Skriv ut" />
         }
-
-
-        <h6 class="pt-4">Välj ELISA</h6>
-
-        @foreach (var id in Model.ElisaIds)
-        {
-            <div>
-                <a href="~/ElisaPages/ViewLayout/?ElisaId=@id">ELISA id: @id</a>
-            </div>
-        }
-
-
-
     </div>
+    
+    
+    <h6 class="pt-5">Välj ELISA för att visa layout</h6>
+
+    @foreach (var id in Model.ElisaIds)
+    {
+        <div>
+            <a href="~/ElisaPages/ViewLayout/?ElisaId=@id">ELISA id: @id</a>
+        </div>
+    }
 
 
 </div>

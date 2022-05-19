@@ -70,6 +70,7 @@ namespace LimsUI.Pages.ElisaPages
 
             ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
             ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
+            HttpContext.Session.SetResultReviewedReturnValues("ResultReviewedReturnValues", resultReviewedReturnValues);
 
             HttpContext.Session.Remove("SendRawDataReturnValues");
 
@@ -80,7 +81,8 @@ namespace LimsUI.Pages.ElisaPages
                 return Redirect($"~/ElisaPages/ViewLayout/?ElisaId={elisaId}");
             }
 
-            return Redirect($"~/ElisaPages/ElisaResult/?ElisaId={elisaId}");
+            //return Redirect($"~/ElisaPages/ElisaResult/?ElisaId={elisaId}");
+            return Redirect($"~/ElisaPages/ElisaResult/");
         }
 
 
