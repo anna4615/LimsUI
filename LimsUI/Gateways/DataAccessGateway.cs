@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LimsUI.Gateways
 {
-    public class SampleGateway : ISampleGateway
+    public class DataAccessGateway : IDataAccessGateway
     {
         private readonly IGraphQLClient _client;
 
-        public SampleGateway(IGraphQLClient client)
+        public DataAccessGateway(IGraphQLClient client)
         {
             _client = client;
         }
@@ -45,33 +45,33 @@ namespace LimsUI.Gateways
         }
 
 
-        public async Task<Elisa> GetResultForElisa(int elisaId)
-        {
-            GraphQLRequest query = new GraphQLRequest
-            {
-                Query = $@"query {{
-                            elisas(where:{{ id: {{ eq: {elisaId}}}}}){{
-		                        id
-		                        status
-		                        dateFinished
-		                        tests{{	
-                                    status
-			                        sample{{
-				                    id
-				                    name
-				                    concentration				
-			                    }}
-		                    }}
-	                    }}
-                    }}"
-            };
+        //public async Task<Elisa> GetResultForElisa(int elisaId)
+        //{
+        //    GraphQLRequest query = new GraphQLRequest
+        //    {
+        //        Query = $@"query {{
+        //                    elisas(where:{{ id: {{ eq: {elisaId}}}}}){{
+		      //                  id
+		      //                  status
+		      //                  dateFinished
+		      //                  tests{{	
+        //                            status
+			     //                   sample{{
+				    //                id
+				    //                name
+				    //                concentration				
+			     //               }}
+		      //              }}
+	       //             }}
+        //            }}"
+        //    };
 
-            GraphQLResponse<ElisaList> response = await _client.SendQueryAsync<ElisaList>(query);
+        //    GraphQLResponse<ElisaList> response = await _client.SendQueryAsync<ElisaList>(query);
 
-            List<Elisa> results = response.Data.Elisas;
+        //    List<Elisa> results = response.Data.Elisas;
 
-            return results.FirstOrDefault();
-        }
+        //    return results.FirstOrDefault();
+        //}
 
         public async Task<List<int>> GetElisaIdsForStatus(string status)
         {

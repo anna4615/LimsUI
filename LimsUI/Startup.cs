@@ -56,7 +56,7 @@ namespace LimsUI
             services.AddScoped<IGraphQLClient>(s => new GraphQLHttpClient(Configuration["GraphQLURI"],
                 new NewtonsoftJsonSerializer()));
 
-            services.AddScoped<ISampleGateway, SampleGateway>();
+            services.AddScoped<IDataAccessGateway, DataAccessGateway>();
             services.AddScoped<IProcessGateway, ProcessGateway>();
 
             services.AddControllers();

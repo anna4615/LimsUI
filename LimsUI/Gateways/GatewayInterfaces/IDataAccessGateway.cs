@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace LimsUI.Gateways.GatewayInterfaces
 {
-    public interface ISampleGateway
+    public interface IDataAccessGateway
     {
         Task<List<Sample>> GetSamples();
 
-        Task<Elisa> GetResultForElisa(int elisaId);
+        //Task<Elisa> GetResultForElisa(int elisaId);
 
         Task<List<int>> GetElisaIdsForStatus(string status);
     }

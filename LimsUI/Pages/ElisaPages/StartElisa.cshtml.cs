@@ -16,14 +16,14 @@ namespace LimsUI.Pages.ElisaPages
     public class StartElisaModel : PageModel
     {
         private readonly ILogger<StartElisaModel> _logger;
-        private readonly ISampleGateway _sampleGateway;
+        private readonly IDataAccessGateway _dataAccessGateway;
         private readonly IProcessGateway _processGateway;
 
-        public StartElisaModel(ILogger<StartElisaModel> logger, ISampleGateway sampleGateway,
+        public StartElisaModel(ILogger<StartElisaModel> logger, IDataAccessGateway dataAccessGateway,
             IProcessGateway processGateway)
         {
             _logger = logger;
-            _sampleGateway = sampleGateway;
+            _dataAccessGateway = dataAccessGateway;
             _processGateway = processGateway;
         }
 
@@ -42,7 +42,7 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnGet()
         {
-            Samples = await _sampleGateway.GetSamples();
+            Samples = await _dataAccessGateway.GetSamples();
             Samples = Samples.Where(s => s.Concentration == null).ToList();
 
             HttpContext.Session.SetSamples("Samples", Samples);
@@ -58,7 +58,7 @@ namespace LimsUI.Pages.ElisaPages
 
             if (Samples == null)
             {
-                Samples = await _sampleGateway.GetSamples();
+                Samples = await _dataAccessGateway.GetSamples();
             }
 
 

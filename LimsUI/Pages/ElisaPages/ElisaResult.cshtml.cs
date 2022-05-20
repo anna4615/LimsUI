@@ -10,14 +10,14 @@ namespace LimsUI.Pages.ElisaPages
     public class ElisaResultModel : PageModel
     {
 
-        private readonly ISampleGateway _sampleGateway;
-        private readonly IProcessGateway _processGateway;
+        //private readonly IDataAccessGateway _sampleGateway;
+        //private readonly IProcessGateway _processGateway;
 
-        public ElisaResultModel(ISampleGateway sampleGateway, IProcessGateway processGateway)
-        {
-            _sampleGateway = sampleGateway;
-            _processGateway = processGateway;
-        }
+        //public ElisaResultModel(IDataAccessGateway sampleGateway, IProcessGateway processGateway)
+        //{
+        //    _sampleGateway = sampleGateway;
+        //    _processGateway = processGateway;
+        //}
 
         [BindProperty(SupportsGet = true)]
         public int ElisaId { get; set; }

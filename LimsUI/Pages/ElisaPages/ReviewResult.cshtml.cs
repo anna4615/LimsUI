@@ -18,12 +18,12 @@ namespace LimsUI.Pages.ElisaPages
     public class ReviewResultModel : PageModel
     {
         private readonly IProcessGateway _processGateway;
-        private readonly ISampleGateway _sampleGateway;
+        private readonly IDataAccessGateway _dataAccessGateway;
 
-        public ReviewResultModel(IProcessGateway processGateway, ISampleGateway sampleGateway)
+        public ReviewResultModel(IProcessGateway processGateway, IDataAccessGateway dataAccessGateway)
         {
             _processGateway = processGateway;
-            _sampleGateway = sampleGateway;
+            _dataAccessGateway = dataAccessGateway;
         }
 
         [BindProperty]
@@ -48,7 +48,7 @@ namespace LimsUI.Pages.ElisaPages
 
             if (Elisa == null && ElisaId == 0)
             {
-                ElisaIds = await _sampleGateway.GetElisaIdsForStatus("In Review");
+                ElisaIds = await _dataAccessGateway.GetElisaIdsForStatus("In Review");
                 HttpContext.Session.SetElisaIds("Elisas", ElisaIds);
                 return Page();
             }
