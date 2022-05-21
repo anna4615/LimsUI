@@ -14,6 +14,6 @@ namespace LimsUI.Gateways.GatewayInterfaces
         Task<Elisa> GetResultForElisaId(int elisaId);
         Task<List<StandardData>> GetStandardDatasForElisaId(int elisaId);
         Task<List<ProcessInstance>> GetProcesses();
-
+        Task<string> GetVariable(string instanceId, string variableName);
     }
 }

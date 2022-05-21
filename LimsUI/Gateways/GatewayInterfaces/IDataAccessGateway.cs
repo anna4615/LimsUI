@@ -10,6 +10,6 @@ namespace LimsUI.Gateways.GatewayInterfaces
 
         //Task<Elisa> GetResultForElisa(int elisaId);
 
-        Task<List<int>> GetElisaIdsForStatus(string status);
+        //Task<List<int>> GetElisaIdsForStatus(string status);
     }
 }

@@ -18,12 +18,10 @@ namespace LimsUI.Pages.ElisaPages
     public class ReviewResultModel : PageModel
     {
         private readonly IProcessGateway _processGateway;
-        private readonly IDataAccessGateway _dataAccessGateway;
 
-        public ReviewResultModel(IProcessGateway processGateway, IDataAccessGateway dataAccessGateway)
+        public ReviewResultModel(IProcessGateway processGateway)
         {
             _processGateway = processGateway;
-            _dataAccessGateway = dataAccessGateway;
         }
 
         [BindProperty]
@@ -48,8 +46,24 @@ namespace LimsUI.Pages.ElisaPages
 
             if (Elisa == null && ElisaId == 0)
             {
-                ElisaIds = await _dataAccessGateway.GetElisaIdsForStatus("In Review");
-                HttpContext.Session.SetElisaIds("Elisas", ElisaIds);
+                List<ProcessInstance> processInstances = await _processGateway.GetProcesses();
+
+                List<string> instanceIds = new List<string>();
+                ElisaIds = new List<int>();
+
+                foreach (ProcessInstance instance in processInstances)
+                {
+                    string elisaVariable = await _processGateway.GetVariable(instance.id, "elisa");
+
+                    GetElisaVariableReturnValues returnValues = JsonSerializer
+                        .Deserialize<GetElisaVariableReturnValues>(elisaVariable,new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    if (returnValues.value != null && returnValues.value.status == "In Review")
+                    {
+                        ElisaIds.Add(returnValues.value.id);
+                    }
+                }
+
                 return Page();
             }
 
@@ -87,7 +101,7 @@ namespace LimsUI.Pages.ElisaPages
 
 
 
-        public ResultReviewedBody MakeResultReviewedBody()
+        private ResultReviewedBody MakeResultReviewedBody()
         {
             ResultReviewedBody body = new ResultReviewedBody
             {

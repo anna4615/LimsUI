@@ -105,7 +105,7 @@ namespace LimsUI.Gateways
 
         public async Task<List<ProcessInstance>> GetProcesses()
         {
-            HttpResponseMessage response = await _client.GetAsync(_configuration["GetProcessInstance"]);
+            HttpResponseMessage response = await _client.GetAsync(_configuration["GetProcessInstances"]);
             string responseString = await response.Content.ReadAsStringAsync();
             List<ProcessInstance> processList = JsonSerializer.Deserialize<List<ProcessInstance>>(responseString);
 
@@ -113,23 +113,10 @@ namespace LimsUI.Gateways
         }
 
 
-        private async Task<string> GetProcessInstanceId(int elisaId)
-        {
-            //Hämta rätt process mhja BusinessKey, BusinessKey = ElisaId
-            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstance"] + $"?businessKey={elisaId}");
-            string responseString = await respons.Content.ReadAsStringAsync();
-            string trimmedResponse = responseString.Trim('[').Trim(']');
-
-            ProcessInstance processInstance = JsonSerializer.Deserialize<ProcessInstance>(trimmedResponse, _caseInsensitive);
-            return processInstance.id;
-        }
-
-
-
-        private async Task<string> GetVariable(string instanceId, string variableName)
+        public async Task<string> GetVariable(string instanceId, string variableName)
         {
             HttpResponseMessage response = await _client.GetAsync(
-                _configuration["GetProcessInstance"] + instanceId + "/variables/" + variableName);
+                _configuration["GetProcessInstances"] + instanceId + "/variables/" + variableName);
 
             string responseString = await response.Content.ReadAsStringAsync();
 
@@ -137,6 +124,21 @@ namespace LimsUI.Gateways
         }
 
 
+
+
+
+
+
+        private async Task<string> GetProcessInstanceId(int elisaId)
+        {
+            //Hämta rätt process mhja BusinessKey, BusinessKey = ElisaId
+            HttpResponseMessage respons = await _client.GetAsync(_configuration["GetProcessInstances"] + $"?businessKey={elisaId}");
+            string responseString = await respons.Content.ReadAsStringAsync();
+            string trimmedResponse = responseString.Trim('[').Trim(']');
+
+            ProcessInstance processInstance = JsonSerializer.Deserialize<ProcessInstance>(trimmedResponse, _caseInsensitive);
+            return processInstance.id;
+        }
 
     }
 }
