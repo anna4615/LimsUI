@@ -34,16 +34,21 @@ namespace LimsUI.Pages.ElisaPages
 
         public List<StandardData> StandardDatas { get; set; }
 
-        public List<Elisa> Elisas { get; set; }
+        //public List<Elisa> Elisas { get; set; }
 
         public List<int> ElisaIds { get; set; }
 
 
         public async Task<IActionResult> OnGet()
         {
+            //Om man kommer hit efter att ha valt en fil på SendRawData Page finns det en cookie som innehåller resultatet
+            //för den fil man valde där och resultatet visas direkt för granskning        
             Elisa = HttpContext.Session.GetElisaFromSendRawDataReturnValues("SendRawDataReturnValues");
             StandardDatas = HttpContext.Session.GetStandardDataFromSendRawDataReturnValues("SendRawDataReturnValues");
 
+
+            //Om man går direkt till den här sidan utan att ha valt en fil på SendRawDAata Page får man välja ELISA
+            //från en lista med beräknade resultat som väntar på granskning.
             if (Elisa == null && ElisaId == 0)
             {
                 List<ProcessInstance> processInstances = await _processGateway.GetProcesses();
@@ -67,6 +72,7 @@ namespace LimsUI.Pages.ElisaPages
                 return Page();
             }
 
+            //Tar bort cookien när den använts för att väntande resultat skall visas nästa gång sidan laddas
             HttpContext.Session.Remove("SendRawDataReturnValues");
 
             return Page();
@@ -75,6 +81,8 @@ namespace LimsUI.Pages.ElisaPages
 
         public async Task<IActionResult> OnPost()
         {
+            //Om man valt en ELISA från en lista med resultat som väntar på granskning och klickat på "Visa resultat för granskning"
+            //hämtas det resultatet från processen och visas för granskning.
             if (ReviewedResult.Id == 0)
             {
                 Elisa = await _processGateway.GetResultForElisaId(ElisaId);
@@ -82,6 +90,7 @@ namespace LimsUI.Pages.ElisaPages
                 return Page();
             }
 
+            //Om man granskat ett resultat och klickat på "Spara resultat" skickas beslutet till processen.
             ResultReviewedBody resultReviewedBody = MakeResultReviewedBody();
             ResultReviewedReturnValues resultReviewedReturnValues = await _processGateway.SendResultReviewed(resultReviewedBody);
             HttpContext.Session.SetResultReviewedReturnValues("ResultReviewedReturnValues", resultReviewedReturnValues);
@@ -95,7 +104,6 @@ namespace LimsUI.Pages.ElisaPages
                 return Redirect($"~/ElisaPages/ViewLayout/?ElisaId={elisaId}");
             }
 
-            //return Redirect($"~/ElisaPages/ElisaResult/?ElisaId={elisaId}");
             return Redirect($"~/ElisaPages/ElisaResult/");
         }
 
