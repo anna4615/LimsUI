@@ -50,8 +50,6 @@ namespace LimsUI.Pages.ElisaPages
 
             HttpContext.Session.SetSendRawDataReturnValues("SendRawDataReturnValues", sendRawDataReturnValues);
 
-
-           // Elisa = JsonSerializer.Deserialize<Elisa>(sendRawDataReturnValues.variables.elisa.value, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
            
             return Redirect($"./ReviewResult/");
         }
@@ -70,6 +68,8 @@ namespace LimsUI.Pages.ElisaPages
             {
                 ResultLines.Add(line);
             }
+
+            reader.Close();
         }
 
         private SendRawDataBody MakeSendRawDataBody()

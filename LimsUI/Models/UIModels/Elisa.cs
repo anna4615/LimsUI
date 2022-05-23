@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace LimsUI.Models.UIModels
@@ -15,7 +16,10 @@ namespace LimsUI.Models.UIModels
 
         public List<Test> Tests { get; set; }
 
+        [Display(Name = "Godkänn resultatet")]
         public bool Approved { get; set; }
+
+        [Display(Name = "Kör om ELISAn")]
         public bool Redo { get; set; }
     }
 }

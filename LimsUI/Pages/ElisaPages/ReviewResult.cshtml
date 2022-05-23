@@ -97,7 +97,6 @@
 
                 <div class="d-flex justify-content-center pt-3">
                     <input asp-for="ReviewedResult.Id" value="@Model.Elisa.Id" hidden>
-                    @*<input asp-for="ResultReviewed" checked hidden>*@
                     <div>
                         <label asp-for="ReviewedResult.Approved"></label>
                         <input asp-for="ReviewedResult.Approved">
@@ -108,7 +107,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <input type="submit" value="Spara resultat" class="btn btn-primary" />
+                    <input type="submit" value="Spara beslut" class="btn btn-primary" />
                 </div>
             </form>
         </div>
